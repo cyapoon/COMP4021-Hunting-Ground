@@ -6,7 +6,7 @@ const Wall1 = function(ctx,x,y){
     sprite.setSequence(sequence)
         .setScale(1)
         .setShadowScale({ x: 0.75, y: 0.2 })
-        .useSheet("wall1.png");
+        .useSheet("../asset/image/wall1.png");
 
     return {
         getXY: sprite.getXY,
@@ -26,7 +26,7 @@ const Wall2 = function(ctx,x,y){
     sprite.setSequence(sequence)
         .setScale(1)
         .setShadowScale({ x: 0.75, y: 0.2 })
-        .useSheet("wall2.png");
+        .useSheet("../asset/image/wall2.png");
 
     return {
         getXY: sprite.getXY,
@@ -46,7 +46,7 @@ const Road = function(ctx,x,y){
     sprite.setSequence(sequence)
         .setScale(1)
         .setShadowScale({ x: 0.75, y: 0.2 })
-        .useSheet("road.png");
+        .useSheet("../asset/image/road.png");
 
     return {
         getXY: sprite.getXY,

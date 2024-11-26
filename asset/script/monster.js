@@ -30,7 +30,7 @@ const Monster = function(ctx, x, y, gameArea,mapData,map) {
     sprite.setSequence(sequences.idleDown)
           .setScale(1)
         //   .setShadowScale({ x: 0.75, y: 0.20 })
-          .useSheet("monster_run.png");
+          .useSheet("../asset/image/monster_run.png");
 
     // This is the moving direction, which can be a number from 0 to 4:
     // - `0` - not moving
@@ -121,8 +121,8 @@ const Monster = function(ctx, x, y, gameArea,mapData,map) {
                         || mapData[bottomYIndex][leftXIndex] == 1 || mapData[bottomYIndex][leftXIndex] == 2)
                     {
                         hit = (
-                            map[topYIndex][leftXIndex].getBoundingBox().isPointInBox(x-10,y)
-                            || map[bottomYIndex][leftXIndex].getBoundingBox().isPointInBox(x-10,y)
+                            map[topYIndex][leftXIndex].getBoundingBox().isPointInBox(x-15,y)
+                            || map[bottomYIndex][leftXIndex].getBoundingBox().isPointInBox(x-15,y)
                         // || map[thisYIndex+1][leftXIndex].getBoundingBox().isPointInBox(x-20,y)
                         );
                     }
@@ -132,8 +132,8 @@ const Monster = function(ctx, x, y, gameArea,mapData,map) {
                        || mapData[topYIndex][rightXIndex] == 1 || mapData[topYIndex][rightXIndex] == 2)
                     {
                         hit = (
-                            map[topYIndex][leftXIndex].getBoundingBox().isPointInBox(x,y-10)
-                            || map[topYIndex][rightXIndex].getBoundingBox().isPointInBox(x,y-10)
+                            map[topYIndex][leftXIndex].getBoundingBox().isPointInBox(x,y-15)
+                            || map[topYIndex][rightXIndex].getBoundingBox().isPointInBox(x,y-15)
                         // || map[thisYIndex][thisXIndex+1].getBoundingBox().isPointInBox(x,y)
                         );
                     }
@@ -143,8 +143,8 @@ const Monster = function(ctx, x, y, gameArea,mapData,map) {
                         || mapData[bottomYIndex][rightXIndex] == 1 || mapData[bottomYIndex][rightXIndex] == 2)
                     {
                         hit = (
-                            map[topYIndex][rightXIndex].getBoundingBox().isPointInBox(x+10,y)
-                            || map[bottomYIndex][rightXIndex].getBoundingBox().isPointInBox(x+10,y)
+                            map[topYIndex][rightXIndex].getBoundingBox().isPointInBox(x+15,y)
+                            || map[bottomYIndex][rightXIndex].getBoundingBox().isPointInBox(x+15,y)
                         // || map[thisYIndex+1][rightXIndex].getBoundingBox().isPointInBox(x+20,y)
                         );
 
@@ -155,8 +155,8 @@ const Monster = function(ctx, x, y, gameArea,mapData,map) {
                         ||mapData[bottomYIndex][rightXIndex] == 1 || mapData[bottomYIndex][rightXIndex] == 2)
                     {
                         hit = (
-                            map[bottomYIndex][leftXIndex].getBoundingBox().isPointInBox(x,y+10)
-                            || map[bottomYIndex][rightXIndex].getBoundingBox().isPointInBox(x,y+10)
+                            map[bottomYIndex][leftXIndex].getBoundingBox().isPointInBox(x,y+15)
+                            || map[bottomYIndex][rightXIndex].getBoundingBox().isPointInBox(x,y+15)
                         // || map[thisYIndex][thisXIndex+1].getBoundingBox().isPointInBox(x,y)
                         );
                     }
