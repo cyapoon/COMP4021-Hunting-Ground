@@ -3,23 +3,24 @@
 // - `x` - The initial x position of the player
 // - `y` - The initial y position of the player
 // - `gameArea` - The bounding box of the game area
-const Monster = function(ctx, x, y, gameArea) {
+const Monster = function(ctx, x, y, gameArea,mapData,map) {
 
     // This is the sprite sequences of the player facing different directions.
     // It contains the idling sprite sequences `idleLeft`, `idleUp`, `idleRight` and `idleDown`,
     // and the moving sprite sequences `moveLeft`, `moveUp`, `moveRight` and `moveDown`.
     const sequences = {
         /* Idling sprite sequences for facing different directions */
-        idleLeft:  { x: 0, y: 128, width: 25, height: 25, count: 4, timing: 2000, loop: false },
-        idleUp:    { x: 0, y: 64, width: 25, height: 25, count: 4, timing: 2000, loop: false },
-        idleRight: { x: 0, y: 192, width: 25, height: 25, count: 4, timing: 2000, loop: false },
-        idleDown:  { x: 0, y:  0, width: 25, height: 25, count: 4, timing: 2000, loop: false },
+
+        idleLeft:  { x: 0, y: 128, width: 64, height: 64, count: 1, timing: 50, loop: false },
+        idleUp:    { x: 0, y: 64, width: 64, height: 64, count: 1, timing: 50, loop: false },
+        idleRight: { x: 0, y: 192, width: 64, height: 64, count: 1, timing: 50, loop: false },
+        idleDown:  { x: 0, y: 0, width: 64, height: 64, count: 1, timing: 50, loop: false },
 
         /* Moving sprite sequences for facing different directions */
-        moveLeft:  { x: 0, y: 125, width: 24, height: 25, count: 10, timing: 50, loop: true },
-        moveUp:    { x: 0, y: 150, width: 24, height: 25, count: 10, timing: 50, loop: true },
-        moveRight: { x: 0, y: 175, width: 24, height: 25, count: 10, timing: 50, loop: true },
-        moveDown:  { x: 0, y: 100, width: 24, height: 25, count: 10, timing: 50, loop: true }
+        moveLeft:  { x: 0, y: 128, width: 64, height: 64, count: 8, timing: 50, loop: true },
+        moveUp:    { x: 0, y: 64, width: 64, height: 64, count: 8, timing: 50, loop: true },
+        moveRight: { x: 0, y: 192, width: 64, height: 64, count: 8, timing: 50, loop: true },
+        moveDown:  { x: 0, y: 0, width: 64, height: 64, count: 8, timing: 50, loop: true },
     };
 
     // This is the sprite object of the player created from the Sprite module.
@@ -27,9 +28,9 @@ const Monster = function(ctx, x, y, gameArea) {
 
     // The sprite object is configured for the player sprite here.
     sprite.setSequence(sequences.idleDown)
-          .setScale(0.4)
-          .setShadowScale({ x: 0.75, y: 0.20 })
-          .useSheet("monster_idle.png");
+          .setScale(1)
+        //   .setShadowScale({ x: 0.75, y: 0.20 })
+          .useSheet("monster_run.png");
 
     // This is the moving direction, which can be a number from 0 to 4:
     // - `0` - not moving
@@ -59,6 +60,7 @@ const Monster = function(ctx, x, y, gameArea) {
     // This function stops the player from moving.
     // - `dir` - the moving direction when the player is stopped (1: Left, 2: Up, 3: Right, 4: Down)
     const stop = function(dir) {
+        // sprite.useSheet("monster_idle.png");
         if (direction == dir) {
             switch (dir) {
                 case 1: sprite.setSequence(sequences.idleLeft); break;
@@ -69,6 +71,8 @@ const Monster = function(ctx, x, y, gameArea) {
             direction = 0;
         }
     };
+
+
 
     // This function speeds up the player.
     const speedUp = function() {
@@ -87,6 +91,8 @@ const Monster = function(ctx, x, y, gameArea) {
         if (direction != 0) {
             let { x, y } = sprite.getXY();
 
+            // console.log("x: ",x,"y: ",y);
+
             /* Move the player */
             switch (direction) {
                 case 1: x -= speed / 60; break;
@@ -95,9 +101,71 @@ const Monster = function(ctx, x, y, gameArea) {
                 case 4: y += speed / 60; break;
             }
 
+            // let boundingBox = sprite.getBoundingBox();
+            // let topIndex = parseInt((boundingBox.getTop()-gameArea.getTop())/25);
+            // let leftIndex = parseInt((boundingBox.getLeft()-gameArea.getLeft())/25);
+            // let rightIndex = parseInt((boundingBox.getRight()-gameArea.getLeft())/25);
+            // let bottomIndex = parseInt((boundingBox.getBottom()-gameArea.getTop())/25);
+            let leftXIndex = Math.floor((x-gameArea.getLeft())/25);
+            let rightXIndex = Math.ceil((x-gameArea.getLeft())/25);
+            let topYIndex = Math.floor((y-gameArea.getTop())/25);
+            let bottomYIndex = Math.ceil((y-gameArea.getLeft())/25);
+
+            // console.log("topIndex: ",topIndex,"leftIndex: ",leftIndex,"rightIndex: ",rightIndex,"bottomIndex: ",bottomIndex);
+            // console.log("thisXIndex: ",thisXIndex,"thisYIndex: ",thisYIndex);
+            let hit = false;
+
+            switch (direction) {
+                case 1:
+                    if(mapData[topYIndex][leftXIndex] == 1 || mapData[topYIndex][leftXIndex] == 2
+                        || mapData[bottomYIndex][leftXIndex] == 1 || mapData[bottomYIndex][leftXIndex] == 2)
+                    {
+                        hit = (
+                            map[topYIndex][leftXIndex].getBoundingBox().isPointInBox(x-10,y)
+                            || map[bottomYIndex][leftXIndex].getBoundingBox().isPointInBox(x-10,y)
+                        // || map[thisYIndex+1][leftXIndex].getBoundingBox().isPointInBox(x-20,y)
+                        );
+                    }
+                    break;
+                case 2:
+                    if(mapData[topYIndex][leftXIndex] == 1 || mapData[topYIndex][leftXIndex] == 2
+                       || mapData[topYIndex][rightXIndex] == 1 || mapData[topYIndex][rightXIndex] == 2)
+                    {
+                        hit = (
+                            map[topYIndex][leftXIndex].getBoundingBox().isPointInBox(x,y-10)
+                            || map[topYIndex][rightXIndex].getBoundingBox().isPointInBox(x,y-10)
+                        // || map[thisYIndex][thisXIndex+1].getBoundingBox().isPointInBox(x,y)
+                        );
+                    }
+                    break;
+                case 3:
+                    if(mapData[topYIndex][rightXIndex] == 1 || mapData[topYIndex][rightXIndex] == 2
+                        || mapData[bottomYIndex][rightXIndex] == 1 || mapData[bottomYIndex][rightXIndex] == 2)
+                    {
+                        hit = (
+                            map[topYIndex][rightXIndex].getBoundingBox().isPointInBox(x+10,y)
+                            || map[bottomYIndex][rightXIndex].getBoundingBox().isPointInBox(x+10,y)
+                        // || map[thisYIndex+1][rightXIndex].getBoundingBox().isPointInBox(x+20,y)
+                        );
+
+                    }
+                    break;
+                case 4:
+                    if(mapData[bottomYIndex][leftXIndex] == 1 || mapData[bottomYIndex][leftXIndex] == 2
+                        ||mapData[bottomYIndex][rightXIndex] == 1 || mapData[bottomYIndex][rightXIndex] == 2)
+                    {
+                        hit = (
+                            map[bottomYIndex][leftXIndex].getBoundingBox().isPointInBox(x,y+10)
+                            || map[bottomYIndex][rightXIndex].getBoundingBox().isPointInBox(x,y+10)
+                        // || map[thisYIndex][thisXIndex+1].getBoundingBox().isPointInBox(x,y)
+                        );
+                    }
+            }
+
             /* Set the new position if it is within the game area */
-            if (gameArea.isPointInBox(x, y))
+            if (gameArea.isPointInBox(x, y) && !hit) {
                 sprite.setXY(x, y);
+            }
         }
 
         /* Update the sprite object */
@@ -112,6 +180,7 @@ const Monster = function(ctx, x, y, gameArea) {
         slowDown: slowDown,
         getBoundingBox: sprite.getBoundingBox,
         draw: sprite.draw,
-        update: update
+        update: update,
+        getDisplaySize: sprite.getDisplaySize
     };
 };
