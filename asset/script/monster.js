@@ -106,10 +106,10 @@ const Monster = function(ctx, x, y, gameArea,mapData,map) {
             // let leftIndex = parseInt((boundingBox.getLeft()-gameArea.getLeft())/25);
             // let rightIndex = parseInt((boundingBox.getRight()-gameArea.getLeft())/25);
             // let bottomIndex = parseInt((boundingBox.getBottom()-gameArea.getTop())/25);
-            let leftXIndex = Math.floor((x-gameArea.getLeft())/25);
-            let rightXIndex = Math.ceil((x-gameArea.getLeft())/25);
-            let topYIndex = Math.floor((y-gameArea.getTop())/25);
-            let bottomYIndex = Math.ceil((y-gameArea.getLeft())/25);
+            let leftXIndex = Math.floor((x-gameArea.getLeft()+5)/25);
+            let rightXIndex = Math.ceil((x-gameArea.getLeft()-5)/25);
+            let topYIndex = Math.floor((y-gameArea.getTop()+5)/25);
+            let bottomYIndex = Math.ceil((y-gameArea.getLeft()-5)/25);
 
             // console.log("topIndex: ",topIndex,"leftIndex: ",leftIndex,"rightIndex: ",rightIndex,"bottomIndex: ",bottomIndex);
             // console.log("thisXIndex: ",thisXIndex,"thisYIndex: ",thisYIndex);
