@@ -1,31 +1,21 @@
 @import url("https://fonts.googleapis.com/css2?family=Abel&display=swap");
 :root {
-    --material-icons-color: black;
+    --overlay-background: rgba(6, 64, 43, 0.8);
+
+    --overlay-caption-color: #80a53f;
+    --overlay-content-background: linear-gradient(white, #43c56f);
+    --warning-color: red;
+
+    --button-color: #00ff00;
+    --button-background: #a7acba;
+    --button-background-hover: #606060;
+
+    --input-background: #eee;
+    --register-form-background: linear-gradient(#acff5f, #5c9f4a);
+
     --field-color: gray;
     --field-background: white;
     --field-background-hover: #eee;
-    --input-background: #eee;
-    --overlay-background: rgba(245, 158, 114, 0.8);
-    --overlay-caption-color: #eb4a40;
-    --overlay-content-background: linear-gradient(white, #fde0c5);
-
-    --header-background: linear-gradient(to right, #eb4a40, #f59e72);
-    --main-panel-background: linear-gradient(white, #fde0c5);
-    --online-users-panel-background: linear-gradient(to right, #fde0c5, #facba6);
-    --chat-panel-background: none;
-
-    --title-color: white;
-    --caption-color: white;
-
-    --font-color: black;
-    --date-color: gray;
-
-    --register-form-background: linear-gradient(#fde0c5, #facba6);
-    --warning-color: red;
-
-    --button-color: white;
-    --button-background: #f2855d;
-    --button-background-hover: #f8b58b;
 }
 * {
     font-family: "Abel", sans-serif;
@@ -33,10 +23,14 @@
     box-sizing: border-box;
 }
 
-/* Basic */
+/* Basic 
+128 165 63
+167 172 186
+96 96 96
+*/
 body {
-    min-width: 600px;
-    min-height: 300px;
+    min-width: 1075px;
+    min-height: 675px;
     height: 100vh;
     padding: 0;
     margin: 0;
@@ -60,16 +54,18 @@ body {
 
 /* Top level container */
 #container {
+    position:absolute;
     gap: 0px;
     width: 100%;
     height: 100%;
     padding: 0;
-    background-color: rgba(6, 64, 43);
+    /* background-color: rgba(6, 64, 43); */
     background-image: url(./image/Main_BG.png);
-    background-size: contain;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
 }
 
+/* Title related - main page */
 #title{
     width:100%;
     justify-content: center;
@@ -78,6 +74,172 @@ body {
 }
 
 #title_text{
-    font-size: 3em;
+    font-size: 5em;
     color: greenyellow;
+    font-weight: 600;
+}
+
+/* button related - main page */
+#button_container{
+    align-items: center;
+    position:relative;
+    top:90px;
+}
+
+#button_container button {
+    font-size: 3em;
+    margin: 30px 0px;
+    font-weight: 600;
+}
+
+/* instruction overlay - main page */
+#instruction-overlay {
+    display: none;
+    position: absolute;
+    width:80vw;
+    margin: 0px 10vw;
+    background-color: rgba(200,200,200,0.9);
+    padding:0px;
+    height: 100vh;
+    overflow-y:auto;
+}
+
+#close {
+    font-size: 2em;
+    position: absolute;
+    right:0px;
+}
+
+#game_background, #game_instruction{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding:0px 3em;
+}
+
+#game_background_title, #game_instruction_title{
+    font-size: 3em;
+    align-self: center;
+}
+
+#game_background p , #game_instruction p{
+    font-size: 22px;
+    margin:0px;
+    margin-bottom: 2em;
+}
+
+/* signin and register */
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: var(--overlay-background);
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+.overlay .caption {
+    font-size: 120%;
+    color: var(--overlay-caption-color);
+}
+.overlay .content {
+    background: var(--overlay-content-background);
+}
+.warning {
+    font-weight: bold;
+    color: var(--warning-color);
+}
+
+/* Form related */
+form input, form select {
+    width: 100%;
+}
+input, select {
+    font-size: 1rem;
+    background: var(--input-background);
+    border: none;
+    border-radius: 20px;
+    padding: 10px 15px;
+}
+input::placeholder, select {
+    color: gray;
+}
+button {
+    font-weight: bold;
+    border: 1px solid black;
+    color: var(--button-color);
+    background: var(--button-background);
+    box-shadow: 2px 2px 2px rgb(0, 0, 0, 0.4);
+    padding: 0 20px;
+    transition: 1s background;
+    cursor: pointer;
+    font-size: 2em;
+}
+button:hover {
+    background: var(--button-background-hover);
+}
+button:active {
+    margin: 2px -2px -2px 2px;
+    box-shadow: 0px 0px;
+}
+button.icon {
+    height: inherit;
+    border: none;
+    border-radius: 2px;
+    background: none;
+    box-shadow: none;
+    padding: 3px 5px;
+    padding-top: 5px;
+}
+button.icon * {
+    color: white;
+}
+button.icon:hover {
+    background: var(--button-background-hover);
+}
+button.icon:active {
+    margin: 2px -2px -2px 2px;
+}
+
+/* Signin overlay */
+#signin-form {
+    width: 270px;
+    align-self: stretch;
+}
+#register-form {
+    width: 380px;
+    background: var(--register-form-background);
+    padding: 20px;
+}
+
+/* Signout panel */
+
+#user-panel{
+    position:absolute;
+    top:10px;
+    right:10px;
+    z-index:2;
+}
+
+/* Google icon */
+.material-icons {
+    color: var(--material-icons-color);
+}
+
+.field-content {
+    border-radius: 50px;
+    padding: 10px 15px;
+    background: var(--field-background);
+    transition: 1s background;
+}
+.field-content * {
+    color: var(--field-color);
+}
+.field-content:hover {
+    background: var(--field-background-hover);
+}
+.user-name {
+    white-space: nowrap;
 }

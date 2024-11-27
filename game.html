@@ -7,18 +7,97 @@
 </head>
 <body>
     <div id="container" class="col">
+
+        <div id="user-panel" class="row">
+            <div class="field-content row shadow">
+                <span class="user-name">-</span>
+            </div>
+            <button id="signout-button" class="icon"><span class="material-icons">logout</span></button>
+        </div>
+
         <div id = "title" class = "row">
             <span id = "title_text">Hunting Ground</span>
         </div>
+
         <div id = "button_container" class = "col">
             <button id="start">Start Game</button>
             <button id="instruction">Game instruction</button>
         </div>
+
+        <div id="instruction-overlay" class="middle_col col">
+            <button id="close"> &#10006; </button>
+            <div id="game_background">
+                <span id= "game_background_title"> Game Background</span>
+                <p>
+                    Testing
+                </p>
+            </div>
+            <div id="game_instruction">
+                <span id= "game_instruction_title"> Game Instruction</span>
+                <p>
+                    Testing
+                </p>
+            </div>
+        </div>
+
+        <div id="signin-overlay" class="overlay row">
+            <div class="content shadow row">
+                <form id="signin-form" class="col">
+                    <div class="caption">SIGN IN WITH YOUR ACCOUNT</div>
+                    <div class="spacer-0"></div>
+                    <input id="signin-username" placeholder="Enter your username"></input>
+                    <input id="signin-password" type="password" placeholder="Enter your password"></input>
+                    <div class="spacer-0"></div>
+                    <button type="submit">Sign In</button>
+                    <div id="signin-message" class="warning center"></div>
+                    <div class="spacer-grow"></div>
+                </form>
+    
+                <div class="spacer-0"></div>
+    
+                <form id="register-form" class="col">
+                    <div class="caption">OR, REGISTER IF YOU DO NOT HAVE ONE</div>
+                    <div class="spacer-0"></div>
+                    <input id="register-username" maxlength="10" placeholder="Enter your username"></input>
+                    <input id="register-name" maxlength="16" placeholder="Enter your name"></input>
+                    <input id="register-password" type="password" placeholder="Enter your password"></input>
+                    <input id="register-confirm" type="password" placeholder="Enter your password again"></input>
+                    <div class="spacer-0"></div>
+                    <button type="submit">Register</button>
+                    <div id="register-message" class="warning center"></div>
+                </form>
+            </div>
+        </div>
+
     </div>
 
+    <script src="./asset/script/ui.js"></script>
+    <script src="./asset/script/registration.js"></script>
+    <script src="./asset/script/authentication.js"></script>
+    <script src="./asset/script/socket.js"></script>
+    <script src="/socket.io/socket.io.min.js"></script>
     <script>
     $(function() {
-        
+        $("#instruction").on("click", function(){
+            $("#instruction-overlay").show();
+        });
+
+        $("#close").on("click", function(){
+            $("#instruction-overlay").hide();
+        });
+
+        SignInForm.initialize();
+        UserPanel.initialize();
+
+        // Validate the signin
+        Authentication.validate(
+            () => {
+                SignInForm.hide();
+                UserPanel.update(Authentication.getUser());
+                Socket.connect();
+            },
+            () => { SignInForm.show(); }
+        );
     });
     </script>
 </body>

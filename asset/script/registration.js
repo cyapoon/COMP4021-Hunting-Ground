@@ -8,12 +8,12 @@ const Registration = (function() {
     //                 request is successful in this form `onSuccess()`
     // * `onError`   - This is a callback function to be called when the
     //                 request fails in this form `onError(error)`
-    const register = function(username, avatar, name, password, onSuccess, onError) {
+    const register = function(username, name, password, onSuccess, onError) {
 
         //
         // A. Preparing the user data
         //
-        let user_data = {username, avatar, name, password};
+        let user_data = {username, name, password};
         let json_data = JSON.stringify(user_data);
  
         //

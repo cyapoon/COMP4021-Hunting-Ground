@@ -58,7 +58,7 @@ const Authentication = (function() {
     //                 request is successful in this form `onSuccess()`
     // * `onError`   - This is a callback function to be called when the
     //                 request fails in this form `onError(error)`
-    const validate = function(onSuccess, onError) {
+    const validate = function(onSuccess) {
 
         //
         // A. Sending the AJAX request to the server
@@ -74,7 +74,8 @@ const Authentication = (function() {
                     if(onSuccess){
                         onSuccess();
                     }
-                } else if(json.status === "error"){
+                }
+                else if(json.status === "error"){
                     //
                     // C. Processing any error returned by the server
                     //
