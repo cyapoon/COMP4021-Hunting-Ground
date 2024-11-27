@@ -48,9 +48,6 @@ const Authentication = (function() {
             .catch((err) => {
                 console.log("Error!");
             });
-
-        // Delete when appropriate
-        // if (onError) onError("This function is not yet implemented.");
     };
 
     // This function sends a validate request to the server
@@ -87,9 +84,6 @@ const Authentication = (function() {
             .catch((err) => {
                 console.log("Error!");
             });
-
-        // Delete when appropriate
-        // if (onError) onError("This function is not yet implemented.");
     };
 
     // This function sends a sign-out request to the server
@@ -116,9 +110,6 @@ const Authentication = (function() {
             .catch((err) => {
                 console.log("Error!");
             });
-
-        // Delete when appropriate
-        // if (onError) onError("This function is not yet implemented.");
     };
 
     return { getUser, signin, validate, signout };

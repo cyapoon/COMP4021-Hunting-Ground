@@ -1,7 +1,6 @@
 const Registration = (function() {
     // This function sends a register request to the server
     // * `username`  - The username for the sign-in
-    // * `avatar`    - The avatar of the user
     // * `name`      - The name of the user
     // * `password`  - The password of the user
     // * `onSuccess` - This is a callback function to be called when the
@@ -22,9 +21,6 @@ const Registration = (function() {
         fetch("/register", {method: "POST", headers: {"Content-Type":"application/json"}, body: json_data})
             .then((res) => {return res.json()})
             .then((json) => { 
-                // console.log("Successful!");
-                // console.log(json);
-
                 //
                 // J. Handling the success response from the server
                 //
@@ -44,9 +40,6 @@ const Registration = (function() {
             .catch((err) => {
                 console.log("Error!");
             });
- 
-        // Delete when appropriate
-        // if (onError) onError("This function is not yet implemented.");
     };
 
     return { register };

@@ -45,7 +45,6 @@ app.post("/register", (req, res) => {
     //
     // E. Checking for the user data correctness
     //
-    // console.log(req.body);
     if(username === ""){
         res.json({ status: "error", error: "Username can't be empty!"});
         return;
@@ -84,9 +83,6 @@ app.post("/register", (req, res) => {
     // I. Sending a success response to the browser
     //
     res.json({ status: "success" });
-
-    // Delete when appropriate
-    // res.json({ status: "error", error: "This endpoint is not yet implemented." });
 });
 
 // Handle the /signin endpoint
@@ -119,9 +115,6 @@ app.post("/signin", (req, res) => {
     let name = users[username].name;
     req.session.user = {username, name};
     res.json({ status: "success", user: {username, name}});
- 
-    // Delete when appropriate
-    // res.json({ status: "error", error: "This endpoint is not yet implemented." });
 });
 
 // Handle the /validate endpoint
@@ -142,9 +135,6 @@ app.get("/validate", (req, res) => {
         return;
     }
     res.json({ status: "success", user: s_user});
-
-    // Delete when appropriate
-    // res.json({ status: "error", error: "This endpoint is not yet implemented." });
 });
 
 // Handle the /signout endpoint
@@ -159,9 +149,6 @@ app.get("/signout", (req, res) => {
     // Sending a success response
     //
     res.json({ status: "success"});
- 
-    // Delete when appropriate
-    // res.json({ status: "error", error: "This endpoint is not yet implemented." });
 });
 
 
@@ -183,9 +170,8 @@ io.on("connection", (socket) => {
         let username = socket.request.session.user.username;
         let name = socket.request.session.user.name;
         onlineUsers[username] = {name};
-        io.emit("add user", JSON.stringify({username, name}, null, " "));
     }
-    // console.log(onlineUsers);
+
     socket.on("disconnect", () => {
         // Remove the user from the online user list
         if(socket.request.session.user){
@@ -194,13 +180,11 @@ io.on("connection", (socket) => {
             if(onlineUsers[username]){
                 delete onlineUsers[username];
             }
-            io.emit("remove user", JSON.stringify({username, name}, null, " "));
         }
-        // console.log(onlineUsers);
     });
 });
 
 // Use a web server to listen at port 8000
 httpServer.listen(8000, () => {
-    console.log("The chat server has started...");
+    console.log("The game server has started...");
 });

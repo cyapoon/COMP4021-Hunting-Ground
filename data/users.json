@@ -1,3 +1,6 @@
 {
- 
+ "Test": {
+  "name": "Tom Lee",
+  "password": "$2b$10$FwEwZwZWKrJ1ZDW.fBIfNOnCDegNGQt7oGBpaOVHW9rqv/3Ung5GK"
+ }
 }
