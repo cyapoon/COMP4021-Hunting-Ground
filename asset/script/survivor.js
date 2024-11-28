@@ -4,7 +4,7 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
     // This is the sprite sequences of the survivor facing different directions.
     // It contains the idling sprite sequences `idleLeft`, `idleUp`, `idleRight` and `idleDown`,
     // and the moving sprite sequences `moveLeft`, `moveUp`, `moveRight` and `moveDown`.
-    var numTrap = 0;
+    var numTrap = 2;
     var cheatingMode = false; 
 
     const sequences = {
