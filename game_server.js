@@ -26,6 +26,9 @@ app.use(chatSession);
 // The Online user list object
 const onlineUsers = {};
 
+// The user list who are waiting for the game
+const QueueUsers = [];
+
 // This helper function checks whether the text only contains word characters
 function containWordCharsOnly(text) {
     return /^\w+$/.test(text);
@@ -170,6 +173,7 @@ io.on("connection", (socket) => {
         let username = socket.request.session.user.username;
         let name = socket.request.session.user.name;
         onlineUsers[username] = {name};
+        io.emit("users", JSON.stringify(onlineUsers, null, " "));
     }
 
     socket.on("disconnect", () => {
@@ -181,6 +185,26 @@ io.on("connection", (socket) => {
                 delete onlineUsers[username];
             }
         }
+        io.emit("users", JSON.stringify(onlineUsers, null, " "));
+    });
+
+    socket.on("get users", () => {
+        // Send the online users to the browser
+        socket.emit("users", JSON.stringify(onlineUsers, null, " "));
+    });
+
+    socket.on("go in queue", (user) => {
+        QueueUsers.push(user);
+        io.emit("updated queue", JSON.stringify(QueueUsers , null, " ") );
+    });
+
+    socket.on("cancel queue", (user) => {
+        let predicate = (userinqueue) => {
+            return JSON.stringify(userinqueue) === JSON.stringify(user);
+        };
+        let index = QueueUsers.findIndex(predicate);
+        QueueUsers.splice(index, 1);
+        io.emit("updated queue", JSON.stringify(QueueUsers , null, " ") )
     });
 });
 

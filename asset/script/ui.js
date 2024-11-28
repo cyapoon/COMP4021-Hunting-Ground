@@ -16,6 +16,7 @@ const SignInForm = (function() {
                 () => {
                     hide();
                     UserPanel.update(Authentication.getUser());
+                    Socket.connect();
                 },
                 (error) => { $("#signin-message").text(error); }
             );
@@ -75,22 +76,74 @@ const UserPanel = (function() {
             Authentication.signout(
                 () => {
                     Socket.disconnect();
-                    $("#user-panel .user-name").text("");
+                    $("#greeting_text").text("");
+                    $("#instruction-overlay").hide();
                     SignInForm.show();
                 }
             );
         });
+
+        $("#instruction").on("click", function(){
+            $("#instruction-overlay").show();
+        });
+
+        $("#close").on("click", function(){
+            $("#instruction-overlay").hide();
+        });
+
+        $("#start").on("click", function(){
+            $("#frontpage").hide();
+            $("#waiting_page").show();
+            Socket.startgame();
+        });
+
+        $("#cancel").on("click", function(){
+            $("#waiting_page").hide();
+            $("#frontpage").show();
+            Socket.cancel();
+        });
+
     };
 
     // This function updates the user panel
     const update = function(user) {
         if (user) {
-            $("#user-panel .user-name").text(user.name);
+            $("#greeting_text").text("Welcome Back, " + user.name);
+            // $("#user-panel .user-name").text(user.name);
         }
         else {
-            $("#user-panel .user-name").text("");
+            $("#greeting_text").text("Welcome Back, Guest");
+            // $("#user-panel .user-name").text("");
         }
     };
 
     return { initialize, update };
+})();
+
+const OnlineUsersPanel = (function() {
+    // This function updates the user panel
+    const update = function(no_of_player) {
+        if (no_of_player) {
+            $("#user-panel .online-player").text("Online User: " + no_of_player);
+        }
+        else {
+            $("#user-panel .online-player").text("");
+        }
+    };
+
+    return { update };
+})();
+
+const WaitingPage = (function() {
+    // This function updates the queue
+    const update_queue = function(pos) {
+        if (pos) {
+            $("#waiting_pos").text("Queue Position: " + pos);
+        }
+        else {
+            $("#waiting_pos").text("");
+        }
+    };
+
+    return { update_queue };
 })();
