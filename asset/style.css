@@ -60,7 +60,7 @@ body {
     width: 100%;
     height: 100%;
     padding: 0;
-    /* background-color: rgba(6, 64, 43); */
+    background-color: rgba(6, 64, 43);
     background-image: url(./image/Main_BG.png);
     background-size: 100% 100%;
     background-repeat: no-repeat;
@@ -302,4 +302,45 @@ button.icon:active {
     font-size: 3em;
     margin: 30px 0px;
     font-weight: 600;
+}
+
+/* game play */
+#gameplay_page{
+    display:none;
+}
+
+canvas,
+#game-start,
+#game-over {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    border: 1px solid gray;
+    width: 1050px;
+    height: 650px;
+    margin: auto;
+}
+
+canvas {
+    background: url(./image/road.png);
+    background-size: cover;
+}
+
+#game-start,
+#game-over {
+    background: rgba(1, 1, 1, 0.8);
+}
+
+#game-start text {
+    font-size: 2em;
+    fill: white;
+    text-anchor: middle;
+}
+
+#game-start #game-title {
+    font-size: 5em;
+    fill: url(#title-fill);
+    stroke: black;
 }

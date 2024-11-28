@@ -88,6 +88,24 @@
                 <button id="cancel">Cancel</button>
             </div>    
         </div>
+
+        <div id="gameplay_page" class="col page">
+            <canvas width="1050px" height="650px"></canvas>
+
+            <svg xmlns="http://www.w3.org/2000/svg" id="game-start">
+                <defs>
+                    <linearGradient id="title-fill" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0.2" stop-color="red" />
+                        <stop offset="0.4" stop-color="yellow" />
+                        <stop offset="0.6" stop-color="green" />
+                        <stop offset="0.8" stop-color="purple" />
+                    </linearGradient>
+                </defs>
+                <text id="game-title" x="50%" y="45%">The Game is about to Begin!</text>
+                <text id="identity-text" x="50%" y="60%">You are monster!</text>
+                <text id="job-description" x="50%" y="70%">Your job is to kill the survivor</text>
+            </svg>
+        </div>
         
     </div>
 

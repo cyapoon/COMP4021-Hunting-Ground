@@ -147,3 +147,28 @@ const WaitingPage = (function() {
 
     return { update_queue };
 })();
+
+const GamePlayPage = (function() {
+    // This function initializes the UI
+    const initialize = function(identity) {
+        $("#waiting_page").hide();
+        if(identity === "M"){
+            $("#identity-text").text("You are Monster!");
+            $("#job-description").text("Kill the Survivor and don't let him reach the exit!");
+        } else if (identity === "S"){
+            $("#identity-text").text("You are Survivor!");
+            $("#job-description").text("Don't let the Monster catch you and escape from the exit!");
+        }
+        $("#gameplay_page").show();
+        setTimeout(function(){
+            $("#game-start").hide();
+        }, 3000);
+    };
+
+    // This function updates the queue
+    const update_queue = function(pos) {
+        
+    };
+
+    return { initialize, update_queue };
+})();

@@ -29,6 +29,11 @@ const onlineUsers = {};
 // The user list who are waiting for the game
 const QueueUsers = [];
 
+// The user list who are currently playing the game
+const PlayingUsers = {};
+// Boolean -> ensure only one game instance are available
+let in_game = false;
+
 // This helper function checks whether the text only contains word characters
 function containWordCharsOnly(text) {
     return /^\w+$/.test(text);
@@ -167,6 +172,35 @@ io.use((socket, next) => {
     chatSession(socket.request, {}, next);
 });
 
+let placeholder;
+const check_game = function(){
+    if(in_game === false && QueueUsers.length >= 2){
+        let index = Math.round(Math.random());
+        PlayingUsers["Monster"] = QueueUsers[index];
+        PlayingUsers["Survivor"] = QueueUsers[1-index];
+        QueueUsers.splice(0, 2);
+        io.emit("updated queue", JSON.stringify(QueueUsers , null, " ") );
+
+        in_game = true;
+        clearTimeout(placeholder);
+        placeholder = setTimeout(end_game, 1000);
+
+        io.emit("change scene", JSON.stringify(PlayingUsers , null, " ") );
+    } else {
+        placeholder = setTimeout(check_game, 100);
+    }
+};
+
+const end_game = function(){
+    if(in_game === true && Object.keys(PlayingUsers).length === 0){
+        in_game = false;
+        clearTimeout(placeholder);
+        placeholder = setTimeout(check_game, 100);
+    } else {
+        placeholder = setTimeout(end_game, 1000);
+    }
+};
+
 io.on("connection", (socket) => {
     // Add a new user to the online user list
     if(socket.request.session.user){
@@ -176,16 +210,32 @@ io.on("connection", (socket) => {
         io.emit("users", JSON.stringify(onlineUsers, null, " "));
     }
 
+    placeholder = setTimeout(check_game, 100);
+
     socket.on("disconnect", () => {
         // Remove the user from the online user list
         if(socket.request.session.user){
             let username = socket.request.session.user.username;
-            let name = socket.request.session.user.name;
             if(onlineUsers[username]){
                 delete onlineUsers[username];
             }
+            let predicate = (user) => {
+                return JSON.stringify(user) === JSON.stringify(socket.request.session.user);
+            };
+            let pos = QueueUsers.findIndex(predicate);
+            if(pos != -1){
+                QueueUsers.splice(pos,1);
+            }
+
+            if(PlayingUsers["Monster"] && PlayingUsers["Monster"].username === username){
+                delete PlayingUsers["Monster"];
+            } else if (PlayingUsers["Survivor"] && PlayingUsers["Survivor"].username === username){
+                delete PlayingUsers["Survivor"];
+            }
+
         }
         io.emit("users", JSON.stringify(onlineUsers, null, " "));
+        io.emit("updated queue", JSON.stringify(QueueUsers , null, " ") );
     });
 
     socket.on("get users", () => {
@@ -204,7 +254,7 @@ io.on("connection", (socket) => {
         };
         let index = QueueUsers.findIndex(predicate);
         QueueUsers.splice(index, 1);
-        io.emit("updated queue", JSON.stringify(QueueUsers , null, " ") )
+        io.emit("updated queue", JSON.stringify(QueueUsers , null, " ") );
     });
 });
 
