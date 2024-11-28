@@ -1,80 +1,119 @@
-
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Collect the Gems!</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P" rel="stylesheet">
     <style>
-    body {
-        font-family: "Press Start 2P", sans-serif;
-    }
-    #game-container {
-        position: relative;
-    }
-    canvas, #counter, #game-start, #game-over {
-        position: absolute;
-        top: 0px;
-        left: 0px;
-    }
-    canvas, #game-start, #game-over {
-        border: 1px solid gray;
-        width: 1050px;
-        height: 650px;
-    }
-    canvas {
-        background: url(../asset/image/road.png);
-        background-size: cover;
-    }
-    #game-start, #game-over {
-        background: rgba(1, 1, 1, 0.8);
-    }
-    #counter text {
-        font-size: 130%;
-        fill: white;
-        stroke: black;
-        stroke-width: 1px;
-    }
-    #game-start text {
-        font-size: 150%;
-        fill: white;
-        text-anchor: middle;
-    }
-    #game-start #game-title {
-        font-size: 400%;
-        fill: url(#title-fill);
-        stroke: black;
-    }
-    #game-over text {
-        font-size: 120%;
-        fill: url(#game-over-fill);
-        text-anchor: middle;
-    }
+        body {
+            font-family: "Press Start 2P", sans-serif;
+        }
+
+        #game-container {
+            position: relative;
+        }
+
+        
+        /* #counter, */
+        canvas,
+        #game-start,
+        #game-over {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            border: 1px solid gray;
+            width: 1050px;
+            height: 650px;
+        }
+
+        /* canvas,
+        #game-start,
+        #game-over {
+            border: 1px solid gray;
+            width: 1050px;
+            height: 650px;
+        } */
+
+        canvas {
+            background: url(../asset/image/road.png);
+            background-size: cover;
+        }
+
+        #game-start,
+        #game-over {
+            background: rgba(1, 1, 1, 0.8);
+        }
+
+        /* #counter text {
+            font-size: 130%;
+            fill: white;
+            stroke: black;
+            stroke-width: 1px;
+        } */
+
+        #game-start text {
+            font-size: 150%;
+            fill: white;
+            text-anchor: middle;
+        }
+
+        #game-start #game-title {
+            font-size: 400%;
+            fill: url(#title-fill);
+            stroke: black;
+        }
+
+        #game-over text {
+            font-size: 120%;
+            fill: url(#game-over-fill);
+            text-anchor: middle;
+        }
+
+        #statistics {
+            font-size: 120%;
+            fill: url(#game-over-fill);
+            /* text-anchor: middle; */
+
+            display: flex;
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            width: 1050px;
+            height: 650px;
+            padding: 0;
+
+            text-align: center;
+            font-size: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+        }
     </style>
 </head>
-<body>
-<div id="game-container">
-    <canvas width="1050px" height="650px"></canvas>
 
-    <svg xmlns="http://www.w3.org/2000/svg" id="counter">
+<body>
+    <div id="game-container">
+        <canvas width="1050px" height="650px"></canvas>
+
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" id="counter">
         <text x="10" y="35">
             TIME:<tspan id="time-remaining">20</tspan>
         </text>
-    </svg>
+    </svg> -->
 
-    <svg xmlns="http://www.w3.org/2000/svg" id="game-start">
-        <defs>
-            <linearGradient id="title-fill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0.2" stop-color="red" />
-                <stop offset="0.4" stop-color="yellow" />
-                <stop offset="0.6" stop-color="green" />
-                <stop offset="0.8" stop-color="purple" />
-            </linearGradient>
-        </defs>
-        <text id="game-title" x="50%" y="45%">GEM RUSH!</text>
-        <text x="50%" y="60%">Click here to start the game</text>
-    </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" id="game-start">
+            <defs>
+                <linearGradient id="title-fill" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0.2" stop-color="red" />
+                    <stop offset="0.4" stop-color="yellow" />
+                    <stop offset="0.6" stop-color="green" />
+                    <stop offset="0.8" stop-color="purple" />
+                </linearGradient>
+            </defs>
+            <text id="game-title" x="50%" y="45%">GEM RUSH!</text>
+            <text x="50%" y="60%">Click here to start the game</text>
+        </svg>
 
-    <svg xmlns="http://www.w3.org/2000/svg" id="game-over" style="display: none">
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" id="game-over" style="display: none">
         <defs>
             <linearGradient id="game-over-fill" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="0" stop-color="red" />
@@ -87,203 +126,233 @@
             <tspan id="final-gems">0</tspan>
             gem(s).
         </text>
-    </svg>
-</div>
+    </svg> -->
+    </div>
+    <!-- <div id="statistics">
 
-<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-<script src="../asset/script/bounding_box.js"></script>
-<script src="../asset/script/sprite.js"></script>
-<script src="../asset/script/map.js"></script>
-<script src="../asset/script/monster.js"></script>
-<script src="../asset/script/survivor.js"></script>
-<script src="../asset/script/wall_road.js"></script>
-<script src="../asset/script/chest.js"></script>
-<script src="../asset/script/obstacle.js"></script>
-<script src="../asset/script/trap.js"></script>
-<script>
-    $(function() {
-        /* Get the canvas and 2D context */
-        const cv = $("canvas").get(0);
-        const context = cv.getContext("2d");
-
-        /* Create the sounds */
-        // const sounds = {
-        //     background: new Audio("background.mp3"),
-        //     collect: new Audio("collect.mp3"),
-        //     gameover: new Audio("gameover.mp3")
-        // };
-
-        const totalGameTime = 20;   // Total game time in seconds
-        const gemMaxAge = 3000;     // The maximum age of the gems in milliseconds
-        let gameStartTime = 0;      // The timestamp when the game starts
-        let collectedGems = 0;      // The number of gems collected in the game
-
-        /* Create the game area */
-        const gameArea = BoundingBox(context, 50, 50, 625, 1025);
+        <div>Monster:</div>
+        <div>Obstacle destroy: <span id="monster-destroy">0</span></div>
+        <div>Trap Hit: <span id="monster-trap">0</span></div>
+    </div> -->
 
 
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script src="../asset/script/bounding_box.js"></script>
+    <script src="../asset/script/sprite.js"></script>
+    <script src="../asset/script/map.js"></script>
+    <script src="../asset/script/monster.js"></script>
+    <script src="../asset/script/survivor.js"></script>
+    <script src="../asset/script/wall_road.js"></script>
+    <script src="../asset/script/chest.js"></script>
+    <script src="../asset/script/obstacle.js"></script>
+    <script src="../asset/script/trap.js"></script>
+    <script>
+        $(function () {
+            /* Get the canvas and 2D context */
+            const cv = $("canvas").get(0);
+            const context = cv.getContext("2d");
 
-        // console.log(monster.getBoundingBox().getBottom());
-        /* Create the map */
-        let gameMap = GameMap(context,gameArea);
-        let mapData = gameMap.getMapData();
-        let map = gameMap.getMap();
+            /* Create the sounds */
+            const sounds = {
+                tension: new Audio("../asset/music/tension.mp3"),
+                calm: new Audio("../asset/music/calm.mp3"),
+            };
 
-        /* Create the sprites in the game */
-        // const monster = Monster(context,gameArea.getRight()-25,gameArea.getBottom()-25,gameArea);
-        const monster = Monster(context,gameArea.getRight()-25,gameArea.getBottom()-25,gameArea,mapData,map);
-        const survivor = Survivor(context,gameArea.getLeft()+25,gameArea.getTop()+10*25,gameArea,mapData,map);
+            // const totalGameTime = 20;   // Total game time in seconds
+            // const gemMaxAge = 3000;     // The maximum age of the gems in milliseconds
+            let gameStartTime = 0;      // The timestamp when the game starts
+            // let collectedGems = 0;      // The number of gems collected in the game
 
-        /* The main processing of the game */
-        function doFrame(now) {
-            if (gameStartTime == 0) gameStartTime = now;
-
-
-            /* Update the time remaining */
-            const gameTimeSoFar = now - gameStartTime;
-            const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
-            $("#time-remaining").text(timeRemaining);
-
-            /* TODO */
-            /* Handle the game over situation here */
-            // if(timeRemaining <= 0){
-            //     sounds.background.pause();
-            //     sounds.collect.pause();
-            //     sounds.gameover.play();
-            //     $("#final-gems").text(collectedGems);
-            //     $("#game-over").show();
-            //     return;
-            // }
-
-            /* Update the sprites */
-            monster.update(now);
-            survivor.update(now);
-
-            const {x,y} = survivor.getXY();
-            if(monster.getBoundingBox().isPointInBox(x,y)){
-                console.log("Game Over");
-            }
-
-            /* Clear the screen */
-            context.clearRect(0, 0, cv.width, cv.height);
+            /* Create the game area */
+            const gameArea = BoundingBox(context, 50, 50, 625, 1025);
 
 
-            for(var i=0; i<map.length; i++){
-                for(var j=0; j<map[i].length; j++){
-                    map[i][j].draw();
-                    // console.log(map[i][j]);
-                }
-            }
-            monster.draw();
-            survivor.draw();
 
-            /* Process the next frame */
-            requestAnimationFrame(doFrame);
-        }
+            // console.log(monster.getBoundingBox().getBottom());
+            /* Create the map */
+            let gameMap = GameMap(context, gameArea);
+            let mapData = gameMap.getMapData();
+            let map = gameMap.getMap();
 
-        /* Handle the start of the game */
-        $("#game-start").on("click", function() {
-            /* Hide the start screen */
-            $("#game-start").hide();
+            /* Create the sprites in the game */
+            // const monster = Monster(context,gameArea.getRight()-25,gameArea.getBottom()-25,gameArea);
+            const monster = Monster(context, gameArea.getRight() - 25, gameArea.getBottom() - 25, gameArea, mapData, map);
+            const survivor = Survivor(context, gameArea.getLeft() + 25, gameArea.getTop() + 10 * 25, gameArea, mapData, map);
 
-            // sounds.background.play();
+            /* The main processing of the game */
+            function doFrame(now) {
+                if (gameStartTime == 0) gameStartTime = now;
 
-            /* Handle the keydown of arrow keys and spacebar */
-            $(document).on("keydown", function(event) {
+                sounds.tension.loop = true;
+                sounds.tension.play();
 
+                /* Update the time remaining */
+                const gameTimeSoFar = now - gameStartTime;
+                var timeInSecond = Math.floor(gameTimeSoFar / 1000);
+                // const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
+                // $("#time-remaining").text(timeRemaining);
 
                 /* TODO */
-                /* Handle the key down */
-                /* survivor move */
-                if(event.keyCode == 65){
-                    survivor.move(1);
+                /* Handle the game over situation here */
+                // if(timeRemaining <= 0){
+                //     sounds.background.pause();
+                //     sounds.collect.pause();
+                //     sounds.gameover.play();
+                //     $("#final-gems").text(collectedGems);
+                //     $("#game-over").show();
+                //     return;
+                // }
+
+                /* Update the sprites */
+                monster.update(now);
+                survivor.update(now);
+
+                /*monster catches the survivor*/
+                const { x, y } = survivor.getXY();
+                if (monster.getBoundingBox().isPointInBox(x - 12, y - 15) && monster.getBoundingBox().isPointInBox(x + 12, y + 15)
+                    && monster.getBoundingBox().isPointInBox(x + 12, y - 15) && monster.getBoundingBox().isPointInBox(x - 12, y + 15)) {
+                    console.log("Monster catches the survivor");
+                    console.log(timeInSecond);
+                    console.log("Monster:");
+                    console.log("Obstacle destroy: " + monster.getNumObstacleDestroyed());
+                    console.log("Trap Hit: " + monster.getNumTrapHit());
+                    console.log("Survivor:");
+                    console.log("Trap set: " + survivor.getNumTrapSet());
+                    console.log("Chest open: " + survivor.getNumChestOpen());
+                    sounds.tension.pause();
+                    return;
                 }
-                else if(event.keyCode == 87){
-                    survivor.move(2);
-                }
-                else if(event.keyCode == 68){
-                    survivor.move(3);
-                }
-                else if(event.keyCode == 83)
-                {
-                    survivor.move(4);
-                }
-                if(event.keyCode == 17)
-                {
-                    survivor.switchCheatingMode();
+                /* The survivor reaches exit */
+                const xIndex = Math.round((x - gameArea.getLeft()) / 25);
+                const yIndex = Math.round((y - gameArea.getTop()) / 25);
+                if (mapData[yIndex][xIndex] == 7) {
+                    console.log("Survivor scapes!");
+                    console.log(timeInSecond);
+                    console.log("Monster:");
+                    console.log("Obstacle destroy" + monster.getNumObstacleDestroyed());
+                    console.log("Trap Hit" + monster.getNumTrapHit());
+                    console.log("Survivor:");
+                    console.log("Trap set" + survivor.getNumTrapSet());
+                    console.log("Chest open" + survivor.getNumChestOpen());
+                    sounds.tension.pause();
+                    return;
                 }
 
+                /* Clear the screen */
+                context.clearRect(0, 0, cv.width, cv.height);
 
-                /* monster move */
-                if(event.keyCode == 37){
-                    monster.move(1);
-                }
-                else if(event.keyCode == 38){
-                    monster.move(2);
-                }
-                else if(event.keyCode == 39){
-                    monster.move(3);
-                }
-                else if(event.keyCode == 40){
-                    monster.move(4);
-                }
-                if(event.keyCode == 32)
-                {
-                    monster.switchCheatingMode();
-                }
-                if(event.keyCode == 74)
-                {
-                    monster.destroy();
-                }
-                if(event.keyCode == 75)
-                {
-                    survivor.setTrap();
-                }
 
+                for (var i = 0; i < map.length; i++) {
+                    for (var j = 0; j < map[i].length; j++) {
+                        map[i][j].draw();
+                        // console.log(map[i][j]);
+                    }
+                }
+                monster.draw();
+                survivor.draw();
+
+                /* Process the next frame */
+                requestAnimationFrame(doFrame);
+            }
+
+            /* Handle the start of the game */
+            $("#game-start").on("click", function () {
+                /* Hide the start screen */
+                $("#game-start").hide();
+
+                // sounds.background.play();
+
+                /* Handle the keydown of arrow keys and spacebar */
+                $(document).on("keydown", function (event) {
+
+
+                    /* TODO */
+                    /* Handle the key down */
+                    /* survivor move */
+                    if (event.keyCode == 65) {
+                        survivor.move(1);
+                    }
+                    else if (event.keyCode == 87) {
+                        survivor.move(2);
+                    }
+                    else if (event.keyCode == 68) {
+                        survivor.move(3);
+                    }
+                    else if (event.keyCode == 83) {
+                        survivor.move(4);
+                    }
+                    if (event.keyCode == 17) {
+                        survivor.switchCheatingMode();
+                    }
+
+
+                    /* monster move */
+                    if (event.keyCode == 37) {
+                        monster.move(1);
+                    }
+                    else if (event.keyCode == 38) {
+                        monster.move(2);
+                    }
+                    else if (event.keyCode == 39) {
+                        monster.move(3);
+                    }
+                    else if (event.keyCode == 40) {
+                        monster.move(4);
+                    }
+                    if (event.keyCode == 32) {
+                        monster.switchCheatingMode();
+                    }
+                    if (event.keyCode == 191) {
+                        monster.destroy();
+                    }
+                    if (event.keyCode == 81) {
+                        survivor.setTrap();
+                    }
+
+                });
+
+                /* Handle the keyup of arrow keys and spacebar */
+                $(document).on("keyup", function (event) {
+
+
+                    /* TODO */
+                    /* Handle the key up */
+                    /* survivor stop */
+                    if (event.keyCode == 65) {
+                        survivor.stop(1);
+                    }
+                    else if (event.keyCode == 87) {
+                        survivor.stop(2);
+                    }
+                    else if (event.keyCode == 68) {
+                        survivor.stop(3);
+                    }
+                    else if (event.keyCode == 83) {
+                        survivor.stop(4);
+                    }
+
+                    /* monster stop */
+                    if (event.keyCode == 37) {
+                        monster.stop(1);
+                    }
+                    else if (event.keyCode == 38) {
+                        monster.stop(2);
+                    }
+                    else if (event.keyCode == 39) {
+                        monster.stop(3);
+                    }
+                    else if (event.keyCode == 40) {
+                        monster.stop(4);
+                    }
+
+                });
+
+                /* Start the game */
+                // gem.randomize(gameArea);
+                requestAnimationFrame(doFrame);
             });
-
-            /* Handle the keyup of arrow keys and spacebar */
-            $(document).on("keyup", function(event) {
-
-
-                /* TODO */
-                /* Handle the key up */
-                /* survivor stop */
-                if(event.keyCode == 65){
-                    survivor.stop(1);
-                }
-                else if(event.keyCode == 87){
-                    survivor.stop(2);
-                }
-                else if(event.keyCode == 68){
-                    survivor.stop(3);
-                }
-                else if(event.keyCode == 83){
-                    survivor.stop(4);
-                }
-
-                /* monster stop */
-                if(event.keyCode == 37){
-                    monster.stop(1);
-                }
-                else if(event.keyCode == 38){
-                    monster.stop(2);
-                }
-                else if(event.keyCode == 39){
-                    monster.stop(3);
-                }
-                else if(event.keyCode == 40){
-                    monster.stop(4);
-                }
-
-            });
-
-            /* Start the game */
-            // gem.randomize(gameArea);
-            requestAnimationFrame(doFrame);
         });
-    });
     </script>
 </body>
-</html>
 
+</html>

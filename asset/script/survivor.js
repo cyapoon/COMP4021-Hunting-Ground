@@ -6,6 +6,31 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
     // and the moving sprite sequences `moveLeft`, `moveUp`, `moveRight` and `moveDown`.
     var numTrap = 2;
     var cheatingMode = false; 
+    var numChestPicked = 0;
+    var numTrapSet = 0;
+
+    // sounds
+    const sound = {
+        chest: new Audio("../asset/music/chest.mp3"),
+    }
+
+    // const getSound = function(){
+    //     return sound;
+    // }
+
+    // This function plays the sound of opening chest.
+    const playChestSound = function(){
+        sound.chest.pause();
+        sound.chest.currentTime = 0;
+        sound.chest.play();
+    }
+
+    const getNumChestOpen = function(){
+        return numChestPicked;
+    }
+    const getNumTrapSet = function(){
+        return numTrapSet;
+    }
 
     const sequences = {
         /* Idling sprite sequences for facing different directions */
@@ -26,7 +51,7 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
 
     // The sprite object is configured for the survivor sprite here.
     sprite.setSequence(sequences.idleDown)
-          .setScale(1)
+          .setScale(1.2)
         //   .setShadowScale({ x: 0.75, y: 0.20 })
           .useSheet("../asset/image/survivor.png");
 
@@ -108,6 +133,7 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
                 mapData[yIndex][xIndex] = 6;
                 map[yIndex][xIndex] = Trap(ctx,gameArea.getLeft()+xIndex*25,gameArea.getTop()+yIndex*25);
                 numTrap--;
+                numTrapSet++;
             }
         }
     
@@ -225,48 +251,64 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
                     if(mapData[topYIndex][leftXIndex] == 4){
                         mapData[topYIndex][leftXIndex] = 0;
                         map[topYIndex][leftXIndex] = Road(ctx,gameArea.getLeft()+leftXIndex*25,gameArea.getTop()+topYIndex*25);
+                        playChestSound();
                         numTrap++;
+                        numChestPicked++;
                     }
                     else if(mapData[bottomYIndex][leftXIndex] == 4){
                         mapData[bottomYIndex][leftXIndex] = 0;
                         map[bottomYIndex][leftXIndex] = Road(ctx,gameArea.getLeft()+leftXIndex*25,gameArea.getTop()+bottomYIndex*25);
+                        playChestSound();
                         numTrap++;
+                        numChestPicked++;
                     }
                     break;
                 case 2:
                     if(mapData[topYIndex][leftXIndex] == 4){
                         mapData[topYIndex][leftXIndex] = 0;
                         map[topYIndex][leftXIndex] = Road(ctx,gameArea.getLeft()+leftXIndex*25,gameArea.getTop()+topYIndex*25);
+                        playChestSound();
                         numTrap++;
+                        numChestPicked++;
                     }
                     else if(mapData[topYIndex][rightXIndex] == 4){
                         mapData[topYIndex][rightXIndex] = 0;
                         map[topYIndex][rightXIndex] = Road(ctx,gameArea.getLeft()+rightXIndex*25,gameArea.getTop()+topYIndex*25);
+                        playChestSound();
                         numTrap++;
+                        numChestPicked++;
                     }
                     break;
                 case 3:
                     if(mapData[topYIndex][rightXIndex] == 4){
                         mapData[topYIndex][rightXIndex] = 0;
                         map[topYIndex][rightXIndex] = Road(ctx,gameArea.getLeft()+rightXIndex*25,gameArea.getTop()+topYIndex*25);
+                        playChestSound();
                         numTrap++;
+                        numChestPicked++;
                     }
                     else if(mapData[bottomYIndex][rightXIndex] == 4){
                         mapData[bottomYIndex][rightXIndex] = 0;
                         map[bottomYIndex][rightXIndex] = Road(ctx,gameArea.getLeft()+rightXIndex*25,gameArea.getTop()+bottomYIndex*25);
+                        playChestSound();
                         numTrap++;
+                        numChestPicked++;
                     }
                     break;
                 case 4:
                     if(mapData[bottomYIndex][leftXIndex] == 4){
                         mapData[bottomYIndex][leftXIndex] = 0;
                         map[bottomYIndex][leftXIndex] = Road(ctx,gameArea.getLeft()+leftXIndex*25,gameArea.getTop()+bottomYIndex*25);
+                        playChestSound();
                         numTrap++;
+                        numChestPicked++;
                     }
                     else if(mapData[bottomYIndex][rightXIndex] == 4){
                         mapData[bottomYIndex][rightXIndex] = 0;
                         map[bottomYIndex][rightXIndex] = Road(ctx,gameArea.getLeft()+rightXIndex*25,gameArea.getTop()+bottomYIndex*25);
+                        playChestSound();
                         numTrap++;
+                        numChestPicked++;
                     }
                     break;
             }
@@ -278,11 +320,11 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
             }
 
             /* Reach exit */
-            const xIndex = Math.round((x - gameArea.getLeft()) / 25);
-            const yIndex = Math.round((y - gameArea.getTop()) / 25);
-            if (mapData[yIndex][xIndex] == 7) {
-                console.log("Escape!");
-            }
+            // const xIndex = Math.round((x - gameArea.getLeft()) / 25);
+            // const yIndex = Math.round((y - gameArea.getTop()) / 25);
+            // if (mapData[yIndex][xIndex] == 7) {
+            //     console.log("Escape!");
+            // }
         }
 
         /* Update the sprite object */
@@ -302,5 +344,8 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
         getXY:sprite.getXY,
         setTrap:setTrap,
         switchCheatingMode:switchCheatingMode,
+        getNumChestOpen:getNumChestOpen,
+        getNumTrapSet:getNumTrapSet,
+        // getSound:getSound,
     };
 };
