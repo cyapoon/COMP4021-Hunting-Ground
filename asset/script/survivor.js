@@ -73,7 +73,7 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
 
     // This function speeds up the monster.
     const speedUp = function () {
-        speed = 250;
+        speed = 275;
     };
 
     // This function slows down the monster while getting trap.
@@ -83,7 +83,7 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
 
     /* This function set survivor to normal speed */
     const normalSpeed = function () {
-        speed = 175;
+        speed = 150;
     }
 
     /* This function switch the cheatint mode */

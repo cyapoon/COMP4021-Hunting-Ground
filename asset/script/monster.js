@@ -40,7 +40,7 @@
      let direction = 0;
 
      // This is the moving speed (pixels per second) of the monster
-     let speed = 150;
+     let speed = 200;
 
      // This function sets the monster's moving direction.
      // - `dir` - the moving direction (1: Left, 2: Up, 3: Right, 4: Down)
@@ -135,7 +135,7 @@
 
      // This function speeds up the monster.
      const speedUp = function () {
-         speed = 250;
+         speed = 275;
      };
 
      // This function slows down the monster while getting trap.
@@ -145,7 +145,7 @@
 
      /* This function set survivor to normal speed */
      const normalSpeed = function () {
-         speed = 175;
+         speed = 200;
      }
 
      /* This function switch the cheatint mode */
