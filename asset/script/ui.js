@@ -386,7 +386,7 @@ const GamePlayPage = (function() {
         gameMap.setMapData(new_map);
     }
 
-    return { initialize, create_map, start_game, add_key_handler,setmap };
+    return { initialize, create_map, start_game, add_key_handler, setmap };
 })();
 
 const StatisticPage = (function() {
