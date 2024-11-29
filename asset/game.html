@@ -113,7 +113,7 @@
         </div>
 
         <div id="gameplay_page" class="col page">
-            <canvas width="1050px" height="650px"></canvas>
+            <canvas tabindex ="0" id="gamescene" width="1050px" height="650px"></canvas>
 
             <svg xmlns="http://www.w3.org/2000/svg" id="game-start">
                 <defs>
@@ -139,6 +139,15 @@
     <script src="./script/registration.js"></script>
     <script src="./script/authentication.js"></script>
     <script src="./script/socket.js"></script>
+    <script src="./script/bounding_box.js"></script>
+    <script src="./script/sprite.js"></script>
+    <script src="./script/map.js"></script>
+    <script src="./script/monster.js"></script>
+    <script src="./script/survivor.js"></script>
+    <script src="./script/wall_road.js"></script>
+    <script src="./script/chest.js"></script>
+    <script src="./script/obstacle.js"></script>
+    <script src="./script/trap.js"></script>
     <script>
     $(function() {
         SignInForm.initialize();
@@ -156,6 +165,62 @@
             }
         );
     });
+
+    /* Get the canvas and 2D context */
+    const cv = $("canvas").get(0);
+    const context = cv.getContext("2d");
+
+    /* Create the sounds */
+    const sounds = {
+        tension: new Audio("./music/tension.mp3"),
+        calm: new Audio("./music/calm.mp3"),
+    };
+
+    let gameStartTime = 0;      // The timestamp when the game starts
+
+    /* Create the game area */
+    const gameArea = BoundingBox(context, 50, 50, 625, 1025);
+
+    /* Create the map */
+    let gameMap = GameMap(context, gameArea);
+    let mapData = gameMap.getMapData();
+    let map = gameMap.getMap();
+
+    /* Create the sprites in the game */
+    const monster = Monster(context, gameArea.getRight() - 25, gameArea.getBottom() - 25, gameArea, mapData, map);
+    const survivor = Survivor(context, gameArea.getLeft() + 25, gameArea.getTop() + 10 * 25, gameArea, mapData, map);
+
+    function doFrame(now) {
+        if (gameStartTime == 0) {
+            gameStartTime = now;
+        }
+
+        sounds.tension.loop = true;
+        sounds.tension.play();
+
+        /* Update the time remaining */
+        const gameTimeSoFar = now - gameStartTime;
+        var timeInSecond = Math.floor(gameTimeSoFar / 1000);
+
+        /* Update the sprites */
+        monster.update(now);
+        survivor.update(now);
+
+        /* Clear the screen */
+        context.clearRect(0, 0, cv.width, cv.height);
+
+        for (var i = 0; i < map.length; i++) {
+            for (var j = 0; j < map[i].length; j++) {
+                map[i][j].draw();
+                // console.log(map[i][j]);
+            }
+        }
+        monster.draw();
+        survivor.draw();
+
+        /* Process the next frame */
+        requestAnimationFrame(doFrame);
+    };
     </script>
 </body>
 </html>

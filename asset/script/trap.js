@@ -6,7 +6,7 @@ const Trap = function(ctx,x,y){
     sprite.setSequence(sequence)
         .setScale(0.275)
         .setShadowScale({ x: 0.75, y: 0.2 })
-        .useSheet("../asset/image/trap.png");
+        .useSheet("./image/trap.png");
 
     return {
         getXY: sprite.getXY,

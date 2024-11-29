@@ -15,8 +15,8 @@ const Monster = function (ctx, x, y, gameArea, mapData, map) {
 
     // sound
     const sound = {
-        destroy: new Audio("../asset/music/destroy.mp3"),
-        trap: new Audio("../asset/music/trap.mp3"),
+        destroy: new Audio("./music/destroy.mp3"),
+        trap: new Audio("./music/trap.mp3"),
     }
 
     const playDestroySound = function () {
@@ -56,7 +56,7 @@ const Monster = function (ctx, x, y, gameArea, mapData, map) {
     sprite.setSequence(sequences.idleDown)
         .setScale(1)
         //   .setShadowScale({ x: 0.75, y: 0.20 })
-        .useSheet("../asset/image/monster_run.png");
+        .useSheet("./image/monster_run.png");
 
     // This is the moving direction, which can be a number from 0 to 4:
     // - `0` - not moving
