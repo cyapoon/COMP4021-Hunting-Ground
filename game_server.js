@@ -34,6 +34,35 @@ const PlayingUsers = {};
 // Boolean -> ensure only one game instance are available
 let in_game = false;
 
+let mapData= [
+    [2,1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,1,1,1,2,1,1,1,1,1,1,2,1,1,1,1,1,1,1,2],
+    [2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,2,0,0,0,0,0,0,0,2],
+    [2,0,0,0,0,0,0,0,0,0,2,1,1,1,1,1,0,0,0,1,1,1,1,0,2,0,0,0,0,0,0,2,0,2,1,1,2,0,0,2],
+    [2,1,1,2,1,1,1,2,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,0,0,0,2,0,1,0,0,2,0,0,2],
+    [2,0,0,2,0,0,0,2,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,2,2,0,2],
+    [2,0,0,2,0,0,0,2,0,0,0,0,1,1,1,1,1,1,1,2,0,0,0,0,0,0,0,0,2,0,0,1,0,1,1,2,1,1,0,2],
+    [2,0,2,1,0,0,0,2,0,0,2,0,0,0,0,0,0,0,0,1,0,2,0,0,2,2,2,0,2,0,0,0,0,0,0,2,0,0,0,2],
+    [2,0,2,0,0,0,0,1,0,0,2,1,1,1,1,2,0,0,0,0,0,2,0,0,1,1,1,0,2,0,0,0,0,0,0,2,0,0,0,2],
+    [2,0,2,0,0,0,0,0,0,0,2,0,0,0,0,2,0,0,0,0,0,2,0,0,0,0,0,0,2,0,0,0,0,0,0,1,0,0,0,2],
+    [2,0,1,1,1,1,0,0,1,1,1,0,0,0,0,1,1,1,1,0,0,2,0,2,0,0,0,2,1,1,1,1,1,1,0,0,0,1,1,2],
+    [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,2],
+    [2,0,1,1,1,2,1,0,0,0,0,0,0,0,0,0,0,2,0,0,0,2,0,2,0,1,1,2,1,1,0,1,1,1,1,2,0,0,0,2],
+    [2,0,0,0,0,2,0,0,0,0,0,0,0,2,1,1,1,1,1,0,0,2,0,1,0,0,0,2,0,0,0,0,0,0,0,2,0,0,0,2],
+    [2,0,0,2,0,2,0,0,0,0,2,0,0,2,0,0,0,0,0,0,0,2,0,0,0,0,0,1,0,0,0,0,2,1,1,1,0,0,0,2],
+    [2,0,2,2,0,2,0,2,0,0,2,0,0,2,0,0,0,2,1,1,1,1,0,0,0,0,0,0,0,0,0,0,2,0,0,0,0,0,0,2],
+    [2,0,1,2,0,2,0,2,0,0,2,1,0,2,0,0,0,2,0,0,0,0,0,1,1,1,2,0,0,0,0,0,1,1,1,0,1,1,0,2],
+    [2,0,0,1,0,1,0,2,0,1,2,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,1,2,0,0,0,0,0,0,0,0,0,0,0,2],
+    [2,0,0,0,0,0,0,2,0,0,1,0,0,2,0,0,0,1,1,1,2,1,1,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,2],
+    [2,0,0,0,0,0,0,2,0,0,0,0,0,1,0,0,0,0,0,0,2,0,0,0,0,0,0,2,0,0,1,0,1,0,1,0,1,1,0,2],
+    [2,0,1,2,2,0,0,2,0,0,0,0,0,0,0,0,0,0,2,0,2,0,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,2],
+    [2,0,0,2,2,0,0,2,0,1,1,2,1,1,1,0,0,0,2,0,2,0,0,0,1,1,1,2,0,2,1,1,0,0,1,2,1,1,0,2],
+    [2,0,1,1,1,1,0,1,0,0,0,1,0,0,0,0,0,0,2,0,1,0,2,0,0,0,0,1,0,2,0,0,0,0,0,1,0,0,0,2],
+    [2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,0,0,2,2,0,0,0,0,0,2,0,0,0,0,0,0,0,0,0,2],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+];
+
+let next_map_data;
+
 // This helper function checks whether the text only contains word characters
 function containWordCharsOnly(text) {
     return /^\w+$/.test(text);
@@ -184,12 +213,82 @@ const check_game = function(){
         in_game = true;
         clearTimeout(placeholder);
         placeholder = setTimeout(end_game, 1000);
-
+        next_map_data = mapData;
+        generate_map();
+        
         io.emit("change scene", JSON.stringify(PlayingUsers , null, " ") );
     } else {
         placeholder = setTimeout(check_game, 100);
     }
 };
+
+function generate_map(){
+    /* The shuffle function for obstacles and traps */
+    const shuffle = (array) => { 
+        for (let i = array.length - 1; i > 0; i--) { 
+        const j = Math.floor(Math.random() * (i + 1)); 
+        [array[i], array[j]] = [array[j], array[i]]; 
+        } 
+        return array; 
+    }; 
+
+    /* Randomly generate obstacle*/
+    let obstaclePossiblePos = [
+        {x:10,y:5},
+        {x:12,y:15},
+        {x:8,y:16},
+        {x:28,y:21},
+        {x:27,y:6},
+        {x:34,y:8},
+        {x:17,y:10},
+        {x:1,y:22},
+        {x:6,y:16},
+        {x:24,y:11},
+        {x:30,y:11},
+    ];
+
+    const selectedObstacle = shuffle(obstaclePossiblePos).slice(0,8);
+    selectedObstacle.forEach((pos) => {
+        next_map_data[pos.y][pos.x] = 5;
+    });
+
+    /* Randomly generate chest*/
+    let chestPossiblePos = [
+        {x:1,y:1},
+        {x:2,y:4},
+        {x:2,y:20},
+        {x:15,y:3},
+        {x:21,y:1},
+        {x:18,y:15},
+        {x:34,y:3},
+        {x:34,y:12},
+        {x:33,y:14},
+        {x:26,y:19},
+        {x:4,y:4},
+    ];
+
+    const selectedChest = shuffle(chestPossiblePos).slice(0,5);
+    selectedChest.forEach((pos)=>{
+        next_map_data[pos.y][pos.x] = 4;
+    })
+
+    /*generate exits */
+    const exitPossiblePos = [
+        {
+            pos1:{x:33, y:0},
+            pos2:{x:39 ,y:18}
+        },
+        {
+            pos1:{x:39, y:4},
+            pos2:{x:35 ,y:23}
+        }
+
+    ];
+
+    const selectedExit = shuffle(exitPossiblePos).slice(0,1);
+    next_map_data[selectedExit[0].pos1.y][selectedExit[0].pos1.x] = 7;
+    next_map_data[selectedExit[0].pos2.y][selectedExit[0].pos2.x] = 7;
+}
 
 const end_game = function(){
     if(in_game === true && Object.keys(PlayingUsers).length === 0){
@@ -258,25 +357,28 @@ io.on("connection", (socket) => {
     });
 
     socket.on("move", (data) => {
-        
         io.emit("moving", JSON.stringify({action: data, playerlist: PlayingUsers},null," "));
-    })
+    });
 
     socket.on("stop", (data) => {
         io.emit("stopping", JSON.stringify({action: data, playerlist: PlayingUsers},null," "));
-    })
+    });
 
     socket.on("cheat", (data) => {
         io.emit("cheating", JSON.stringify({action: data, playerlist: PlayingUsers},null," "));
-    })
+    });
 
     socket.on("trap", () => {
         io.emit("trapping", JSON.stringify({playerlist: PlayingUsers},null," "));
-    })
+    });
 
     socket.on("destroy", () => {
         io.emit("destroying", JSON.stringify({playerlist: PlayingUsers},null," "));
-    })
+    });
+
+    socket.on("getmap", () => {
+        socket.emit("mapdata", next_map_data);
+    });
 });
 
 // Use a web server to listen at port 8000

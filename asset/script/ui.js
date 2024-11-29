@@ -149,6 +149,35 @@ const WaitingPage = (function() {
 })();
 
 const GamePlayPage = (function() {
+    /* Get the canvas and 2D context */
+    const cv = $("canvas").get(0);
+    const context = cv.getContext("2d");
+
+    /* Create the sounds */
+    const sounds = {
+        tension: new Audio("./music/tension.mp3"),
+        calm: new Audio("./music/calm.mp3"),
+    };
+
+    let gameStartTime = 0;      // The timestamp when the game starts
+
+    /* Create the game area */
+    const gameArea = BoundingBox(context, 50, 50, 625, 1025);
+
+    /* Create the map */
+    let gameMap = GameMap(context, gameArea);
+
+
+
+    let mapData;
+    let map;
+
+    /* Create the sprites in the game */
+    let monster;
+    let survivor;
+
+    
+
     // This function initializes the UI
     const initialize = function(identity) {
         $("#waiting_page").hide();
@@ -166,21 +195,90 @@ const GamePlayPage = (function() {
             }, 3000);
         }
         $("#gameplay_page").show();
-        setTimeout(function(){
-            $("#game-start").hide();
-            create_map();
-        }, 3000);
+        create_map();
+    };
+
+    function doFrame(now) {
+        if (gameStartTime == 0) {
+            gameStartTime = now;
+        }
+
+        sounds.tension.loop = true;
+        sounds.tension.play();
+
+        /* Update the time remaining */
+        const gameTimeSoFar = now - gameStartTime;
+        var timeInSecond = Math.floor(gameTimeSoFar / 1000);
+
+        /* Update the sprites */
+        monster.update(now);
+        survivor.update(now);
+
+        /*monster catches the survivor*/
+        const { x, y } = survivor.getXY();
+        if (monster.getBoundingBox().isPointInBox(x - 12, y - 15) && monster.getBoundingBox().isPointInBox(x + 12, y + 15)
+            && monster.getBoundingBox().isPointInBox(x + 12, y - 15) && monster.getBoundingBox().isPointInBox(x - 12, y + 15)) {
+            // console.log("Monster catches the survivor");
+            // console.log(timeInSecond);
+            // console.log("Monster:");
+            // console.log("Obstacle destroy: " + monster.getNumObstacleDestroyed());
+            // console.log("Trap Hit: " + monster.getNumTrapHit());
+            // console.log("Survivor:");
+            // console.log("Trap set: " + survivor.getNumTrapSet());
+            // console.log("Chest open: " + survivor.getNumChestOpen());
+            sounds.tension.pause();
+            return;
+        }
+        /* The survivor reaches exit */
+        const xIndex = Math.round((x - gameArea.getLeft()) / 25);
+        const yIndex = Math.round((y - gameArea.getTop()) / 25);
+        if (mapData[yIndex][xIndex] == 7) {
+            // console.log("Survivor escapes!");
+            // console.log(timeInSecond);
+            // console.log("Monster:");
+            // console.log("Obstacle destroy" + monster.getNumObstacleDestroyed());
+            // console.log("Trap Hit" + monster.getNumTrapHit());
+            // console.log("Survivor:");
+            // console.log("Trap set" + survivor.getNumTrapSet());
+            // console.log("Chest open" + survivor.getNumChestOpen());
+            sounds.tension.pause();
+            return;
+        }
+
+        /* Clear the screen */
+        context.clearRect(0, 0, cv.width, cv.height);
+
+        for (var i = 0; i < map.length; i++) {
+            for (var j = 0; j < map[i].length; j++) {
+                map[i][j].draw();
+                // console.log(map[i][j]);
+            }
+        }
+        monster.draw();
+        survivor.draw();
+
+        /* Process the next frame */
+        requestAnimationFrame(doFrame);
     };
 
     const create_map = function() {
+        Socket.getSocket().emit("getmap");
         /* Start the game */
         start_game();
     };
 
     const start_game = function() {
         /* Start the game */
-        $("#gamescene").focus();
-        requestAnimationFrame(doFrame);
+        setTimeout(function(){
+            $("#game-start").hide();
+            gameMap.drawmap();
+            mapData = gameMap.getMapData();
+            map = gameMap.getMap();
+            monster = Monster(context, gameArea.getRight() - 25, gameArea.getBottom() - 25, gameArea, mapData, map);
+            survivor = Survivor(context, gameArea.getLeft() + 25, gameArea.getTop() + 10 * 25, gameArea, mapData, map);
+            $("#gamescene").focus();
+            requestAnimationFrame(doFrame);
+        }, 3000);    
     };
 
     const add_key_handler = function(identity){
@@ -289,7 +387,11 @@ const GamePlayPage = (function() {
         }
     };
 
-    return { initialize, create_map, start_game, add_key_handler };
+    const setmap = function(new_map){
+        gameMap.setMapData(new_map);
+    }
+
+    return { initialize, create_map, start_game, add_key_handler,setmap };
 })();
 
 const StatisticPage = (function() {

@@ -45,6 +45,10 @@ const Socket = (function () {
             }
         });
 
+        socket.on("mapdata", (mapdata) =>{
+            GamePlayPage.setmap(mapdata);
+        });
+
         socket.on("moving", (data) => {
             const msg = JSON.parse(data);
             let action = msg["action"];
