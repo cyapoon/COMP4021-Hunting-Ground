@@ -212,6 +212,7 @@ const GamePlayPage = (function() {
 
         /*monster catches the survivor*/
         const { x, y } = survivor.getXY();
+        console.log(x , y);
         if (monster.getBoundingBox().isPointInBox(x - 12, y - 15) && monster.getBoundingBox().isPointInBox(x + 12, y + 15)
             && monster.getBoundingBox().isPointInBox(x + 12, y - 15) && monster.getBoundingBox().isPointInBox(x - 12, y + 15)) {
             // console.log("Monster catches the survivor");
@@ -404,7 +405,7 @@ const GamePlayPage = (function() {
         }
     };
 
-    return { initialize, create_map, start_game, add_key_handler, setmap, move , stop};
+    return { initialize, create_map, start_game, add_key_handler, setmap, move, stop};
 })();
 
 const StatisticPage = (function() {

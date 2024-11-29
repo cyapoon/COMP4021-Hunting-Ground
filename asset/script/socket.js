@@ -56,7 +56,7 @@ const Socket = (function () {
             let username = Authentication.getUser().username;
             if ((playing_list["Monster"] && playing_list["Monster"].username === username) || (playing_list["Survivor"] && playing_list["Survivor"].username === username)) {
                 let { direction, identity } = action;
-                GamePlayPage.move(identity.direction);
+                GamePlayPage.move(identity, direction);
                 // if (identity === "M") {
                 //     monster.move(direction);
                 // }
