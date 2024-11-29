@@ -130,6 +130,16 @@ const Socket = (function () {
                 GamePlayPage.update_frame();
             }
         });
+
+        socket.on("result", (winner_list) => {
+            let result = JSON.parse(winner_list);
+            const identity = result.winner;
+            const playinguser = result.list;
+            let username = Authentication.getUser().username;
+            if ((playinguser["Monster"] && playinguser["Monster"].username === username) || (playinguser["Survivor"] && playinguser["Survivor"].username === username)) {
+                StatisticPage.show(identity);
+            }
+        });
     };
 
     // This function disconnects the socket from the server
@@ -151,5 +161,5 @@ const Socket = (function () {
         socket.emit("win", identity);
     }
 
-    return { getSocket, connect, disconnect, startgame, cancel };
+    return { getSocket, connect, disconnect, startgame, cancel, endgame};
 })();
