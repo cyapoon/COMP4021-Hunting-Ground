@@ -256,6 +256,27 @@ io.on("connection", (socket) => {
         QueueUsers.splice(index, 1);
         io.emit("updated queue", JSON.stringify(QueueUsers , null, " ") );
     });
+
+    socket.on("move", (data) => {
+        
+        io.emit("moving", JSON.stringify({action: data, playerlist: PlayingUsers},null," "));
+    })
+
+    socket.on("stop", (data) => {
+        io.emit("stopping", JSON.stringify({action: data, playerlist: PlayingUsers},null," "));
+    })
+
+    socket.on("cheat", (data) => {
+        io.emit("cheating", JSON.stringify({action: data, playerlist: PlayingUsers},null," "));
+    })
+
+    socket.on("trap", () => {
+        io.emit("trapping", JSON.stringify({playerlist: PlayingUsers},null," "));
+    })
+
+    socket.on("destroy", () => {
+        io.emit("destroying", JSON.stringify({playerlist: PlayingUsers},null," "));
+    })
 });
 
 // Use a web server to listen at port 8000
