@@ -212,7 +212,7 @@ const check_game = function(){
 
         in_game = true;
         clearTimeout(placeholder);
-        placeholder = setTimeout(end_game, 1000);
+        placeholder = setTimeout(end_game, 3000);
         next_map_data = mapData;
         generate_map();
         
@@ -294,9 +294,10 @@ const end_game = function(){
     if(in_game === true && Object.keys(PlayingUsers).length === 0){
         in_game = false;
         clearTimeout(placeholder);
-        placeholder = setTimeout(check_game, 100);
+        placeholder = setTimeout(check_game, 5000);
     } else {
-        placeholder = setTimeout(end_game, 1000);
+        placeholder = setTimeout(end_game, 20);
+        io.emit("animate", JSON.stringify(PlayingUsers , null, " "));
     }
 };
 
@@ -358,22 +359,31 @@ io.on("connection", (socket) => {
 
     socket.on("move", (data) => {
         io.emit("moving", JSON.stringify({action: data, playerlist: PlayingUsers},null," "));
+        io.emit("animate", JSON.stringify(PlayingUsers , null, " "));
     });
 
     socket.on("stop", (data) => {
         io.emit("stopping", JSON.stringify({action: data, playerlist: PlayingUsers},null," "));
+        io.emit("animate", JSON.stringify(PlayingUsers , null, " "));
     });
 
     socket.on("cheat", (data) => {
         io.emit("cheating", JSON.stringify({action: data, playerlist: PlayingUsers},null," "));
+        io.emit("animate", JSON.stringify(PlayingUsers , null, " "));
     });
 
     socket.on("trap", () => {
         io.emit("trapping", JSON.stringify({playerlist: PlayingUsers},null," "));
+        io.emit("animate", JSON.stringify(PlayingUsers , null, " "));
     });
 
     socket.on("destroy", () => {
         io.emit("destroying", JSON.stringify({playerlist: PlayingUsers},null," "));
+        io.emit("animate", JSON.stringify(PlayingUsers , null, " "));
+    });
+
+    socket.on("requestanime", () => {
+        io.emit("animate", JSON.stringify(PlayingUsers , null, " "));
     });
 
     socket.on("getmap", () => {

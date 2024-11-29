@@ -174,6 +174,9 @@ const GamePlayPage = (function() {
     let monster;
     let survivor;
 
+    let fps_limit = 60;
+    let time_delta = 0;
+
     // This function initializes the UI
     const initialize = function(identity) {
         $("#waiting_page").hide();
@@ -199,8 +202,10 @@ const GamePlayPage = (function() {
             gameStartTime = now;
         }
 
-        sounds.tension.loop = true;
-        sounds.tension.play();
+        let delta = now-time_delta;
+        if(fps_limit && delta < (1000/fps_limit)-0.01){
+
+        }
 
         /* Update the time remaining */
         const gameTimeSoFar = now - gameStartTime;
@@ -254,8 +259,6 @@ const GamePlayPage = (function() {
         survivor.draw();
 
         /* Process the next frame */
-        console.log("test");
-        setTimeout(requestAnimationFrame(doFrame), 1000);
     };
 
     const create_map = function() {
@@ -274,7 +277,8 @@ const GamePlayPage = (function() {
             monster = Monster(context, gameArea.getRight() - 25, gameArea.getBottom() - 25, gameArea, mapData, map);
             survivor = Survivor(context, gameArea.getLeft() + 25, gameArea.getTop() + 10 * 25, gameArea, mapData, map);
             $("#gamescene").focus();
-            requestAnimationFrame(doFrame);
+            sounds.tension.loop = true;
+            sounds.tension.play();
         }, 3000);    
     };
 
@@ -285,26 +289,32 @@ const GamePlayPage = (function() {
                 if (event.keyCode == 65) {
                     // survivor.move(1);
                     Socket.getSocket().emit("move", {direction: 1, identity: "S"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // survivor.move(2);
                     Socket.getSocket().emit("move", {direction: 2, identity: "S"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // survivor.move(3);
                     Socket.getSocket().emit("move", {direction: 3, identity: "S"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // survivor.move(4);
                     Socket.getSocket().emit("move", {direction: 4, identity: "S"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 32) {
                     // survivor.switchCheatingMode();
                     Socket.getSocket().emit("cheat", {identity: "S"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 74) {
                     // survivor.setTrap();
                     Socket.getSocket().emit("trap");
+                    Socket.getSocket().emit("requestanime");
                 }
 
             });
@@ -314,18 +324,22 @@ const GamePlayPage = (function() {
                 if (event.keyCode == 65) {
                     // survivor.stop(1);
                     Socket.getSocket().emit("stop", {direction: 1, identity: "S"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // survivor.stop(2);
                     Socket.getSocket().emit("stop", {direction: 2, identity: "S"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // survivor.stop(3);
                     Socket.getSocket().emit("stop", {direction: 3, identity: "S"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // survivor.stop(4);
                     Socket.getSocket().emit("stop", {direction: 4, identity: "S"});
+                    Socket.getSocket().emit("requestanime");
                 }
             });
 
@@ -336,26 +350,32 @@ const GamePlayPage = (function() {
                 if (event.keyCode == 65) {
                     // monster.move(1);
                     Socket.getSocket().emit("move", {direction: 1, identity: "M"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // monster.move(2);
                     Socket.getSocket().emit("move", {direction: 2, identity: "M"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // monster.move(3);
                     Socket.getSocket().emit("move", {direction: 3, identity: "M"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // monster.move(4);
                     Socket.getSocket().emit("move", {direction: 4, identity: "M"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 32) {
                     // monster.switchCheatingMode();
                     Socket.getSocket().emit("cheat", {identity: "M"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 74) {
                     // monster.destroy();
                     Socket.getSocket().emit("destroy");
+                    Socket.getSocket().emit("requestanime");
                 }
 
             });
@@ -365,18 +385,22 @@ const GamePlayPage = (function() {
                 if (event.keyCode == 65) {
                     // monster.stop(1);
                     Socket.getSocket().emit("stop", {direction: 1, identity: "M"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // monster.stop(2);
                     Socket.getSocket().emit("stop", {direction: 2, identity: "M"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // monster.stop(3);
                     Socket.getSocket().emit("stop", {direction: 3, identity: "M"});
+                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // monster.stop(4);
                     Socket.getSocket().emit("stop", {direction: 4, identity: "M"});
+                    Socket.getSocket().emit("requestanime");
                 }
             });
 
@@ -405,7 +429,11 @@ const GamePlayPage = (function() {
         }
     };
 
-    return { initialize, create_map, start_game, add_key_handler, setmap, move, stop};
+    const update_frame = function(){
+        requestAnimationFrame(doFrame);
+    }
+
+    return { initialize, create_map, start_game, add_key_handler, setmap, move, stop, update_frame};
 })();
 
 const StatisticPage = (function() {

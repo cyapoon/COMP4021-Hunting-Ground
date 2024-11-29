@@ -122,6 +122,14 @@ const Socket = (function () {
                 monster.destroy();
             }
         });
+
+        socket.on("animate", (playing_list) => {
+            let list = JSON.parse(playing_list);
+            let username = Authentication.getUser().username;
+            if ((list["Monster"] && list["Monster"].username === username) || (list["Survivor"] && list["Survivor"].username === username)) {
+                GamePlayPage.update_frame();
+            }
+        });
     };
 
     // This function disconnects the socket from the server
