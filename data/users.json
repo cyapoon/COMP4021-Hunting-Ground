@@ -6,5 +6,9 @@
  "Test2": {
   "name": "Alex Poon",
   "password": "$2b$10$geeX/05v/RFQ8d1zE1j2Le1HXmrgDA4K3Ozc.YgDxbHiBU7Rosi8C"
+ },
+ "Test3": {
+  "name": "Ken",
+  "password": "$2b$10$MC9UQi4UT1ZBLOsCYr5AhOChr9hoBdvrv1DBnfRygihzEh29AJAMm"
  }
 }
