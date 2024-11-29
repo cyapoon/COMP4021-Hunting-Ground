@@ -345,3 +345,52 @@ canvas {
     fill: url(#title-fill);
     stroke: black;
 }
+
+/* game statistic */
+#statistics_page {
+    display: none;
+}
+#congulation_message {
+    width: 100%;
+    justify-content: center;
+    position: relative;
+    top: 10px;
+}
+
+#congulation_text{
+    color:yellow;
+    font-size: 5em;
+    font-weight: 600;
+}
+
+#time{
+    color:white;
+    font-size: 2em;
+}
+
+#used_time {
+    width: 100%;
+    justify-content: center;
+    position: relative;
+    top: -30px;
+}
+
+#statistics_content {
+    width: 100%;
+    justify-content: center;
+    position: relative;
+    top: -15px;
+}
+
+#monster_stat, #survivor_stat {
+    color:white;
+    font-size: 1.5em;
+}
+
+#end_game_buttons {
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 30px;
+}

@@ -49,7 +49,7 @@
                         <b>Obstacle</b><img src="../image/Obstacle.png" height="25px" width="25px">: The Obstacles can block the way of the Survivor and the Monster.
                         <br><br>
 
-                        <b>Survivor</b> <img src="../image/survivor_crop.png" height="30px" width="30px">: The aim of the survivor is to reach Exits. 
+                        <b>Survivor</b> <img src="../image/survivor_crop.png" height="35px" width="35px">: The aim of the survivor is to reach Exits. 
                         The survivor can move up, down, left, and right by pressing <b>W</b>, <b>S</b>, <b>A</b>, and <b>D</b> respectively. 
                         The survivor can also <span style="color:red">set a trap</span> (<img src="../image/trap_crop.png" height="25px" width="25px">) by pressing <b>J</b>.  
                         Initially, the Survivor has 2 traps. The Survivor can <span style="color:red">obtain extra Traps from Chests</span> (<img src="../image/chest.png" height="25px" width="25px">).
@@ -130,6 +130,40 @@
             </svg>
         </div>
         
+        <div id="statistics_page" class="col page">
+            <div id = "congulation_message" class="row">
+                <span id ="congulation_text">Monster Win!</span>
+            </div>
+
+            <div id = "used_time" class="row">
+                <span id ="time">Time of the Game: 3 mins 30 second</span>
+            </div>
+
+            <div id = "statistics_content" class="row">
+                <div id="monster_stat" class="col">
+                    <img src="../image/monster_crop.png" height="50px" width="50px"> 
+                    Monster Statistics:
+                    <br><br>
+                    Obstacle Destroy: 10
+                    <br>
+                    Trap Hit: 5
+                </div>
+                <div id="survivor_stat" class="col">
+                    <img src="../image/survivor_crop.png" height="50px" width="50px"> 
+                    Survivor Statistics:
+                    <br><br>
+                    Trap Set: 5
+                    <br>
+                    Chest Open: 3
+                </div>
+            </div>
+
+            <div id = "end_game_buttons" class = "col">
+                <button id="restart">Start a new game</button>
+                <button id="back_to_menu">Back to main page</button>
+            </div>
+
+        </div>
     </div>
 
     
@@ -152,6 +186,7 @@
     $(function() {
         SignInForm.initialize();
         UserPanel.initialize();
+        StatisticPage.initialize();
 
         // Validate the signin
         Authentication.validate(
@@ -165,62 +200,6 @@
             }
         );
     });
-
-    /* Get the canvas and 2D context */
-    const cv = $("canvas").get(0);
-    const context = cv.getContext("2d");
-
-    /* Create the sounds */
-    const sounds = {
-        tension: new Audio("./music/tension.mp3"),
-        calm: new Audio("./music/calm.mp3"),
-    };
-
-    let gameStartTime = 0;      // The timestamp when the game starts
-
-    /* Create the game area */
-    const gameArea = BoundingBox(context, 50, 50, 625, 1025);
-
-    /* Create the map */
-    let gameMap = GameMap(context, gameArea);
-    let mapData = gameMap.getMapData();
-    let map = gameMap.getMap();
-
-    /* Create the sprites in the game */
-    const monster = Monster(context, gameArea.getRight() - 25, gameArea.getBottom() - 25, gameArea, mapData, map);
-    const survivor = Survivor(context, gameArea.getLeft() + 25, gameArea.getTop() + 10 * 25, gameArea, mapData, map);
-
-    function doFrame(now) {
-        if (gameStartTime == 0) {
-            gameStartTime = now;
-        }
-
-        sounds.tension.loop = true;
-        sounds.tension.play();
-
-        /* Update the time remaining */
-        const gameTimeSoFar = now - gameStartTime;
-        var timeInSecond = Math.floor(gameTimeSoFar / 1000);
-
-        /* Update the sprites */
-        monster.update(now);
-        survivor.update(now);
-
-        /* Clear the screen */
-        context.clearRect(0, 0, cv.width, cv.height);
-
-        for (var i = 0; i < map.length; i++) {
-            for (var j = 0; j < map[i].length; j++) {
-                map[i][j].draw();
-                // console.log(map[i][j]);
-            }
-        }
-        monster.draw();
-        survivor.draw();
-
-        /* Process the next frame */
-        requestAnimationFrame(doFrame);
-    };
     </script>
 </body>
 </html>

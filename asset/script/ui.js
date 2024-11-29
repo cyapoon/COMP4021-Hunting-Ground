@@ -172,8 +172,12 @@ const GamePlayPage = (function() {
         }, 3000);
     };
 
-    // This function updates the queue
     const create_map = function() {
+        /* Start the game */
+        start_game();
+    };
+
+    const start_game = function() {
         /* Start the game */
         $("#gamescene").focus();
         requestAnimationFrame(doFrame);
@@ -264,5 +268,23 @@ const GamePlayPage = (function() {
         }
     };
 
-    return { initialize, create_map, add_key_handler };
+    return { initialize, create_map, start_game, add_key_handler };
+})();
+
+const StatisticPage = (function() {
+    // This function initializes the UI
+    const initialize = function() {
+        $("#restart").on("click", function(){
+            $("#statistics_page").hide();
+            $("#waiting_page").show();
+            Socket.startgame();
+        });
+
+        $("#back_to_menu").on("click", function(){
+            $("#statistics_page").hide();
+            $("#frontpage").show();
+        });
+    };
+
+    return { initialize };
 })();

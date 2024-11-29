@@ -61,5 +61,9 @@ const Socket = (function() {
         socket.emit("cancel queue", Authentication.getUser());
     }
 
+    const endgame = function(identity) {
+        socket.emit("win", identity);
+    }
+
     return { getSocket, connect, disconnect, startgame, cancel };
 })();

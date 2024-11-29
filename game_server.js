@@ -256,6 +256,10 @@ io.on("connection", (socket) => {
         QueueUsers.splice(index, 1);
         io.emit("updated queue", JSON.stringify(QueueUsers , null, " ") );
     });
+
+    socket.on("win", (identity) => {
+        
+    });
 });
 
 // Use a web server to listen at port 8000
