@@ -174,8 +174,7 @@ const GamePlayPage = (function() {
     let monster;
     let survivor;
 
-    let fps_limit = 60;
-    let time_delta = 0;
+    let gameTimeSoFar;
 
     // This function initializes the UI
     const initialize = function(identity) {
@@ -202,18 +201,15 @@ const GamePlayPage = (function() {
             gameStartTime = now;
         }
 
-        let delta = now-time_delta;
-        if(fps_limit && delta < (1000/fps_limit)-0.01){
-
-        }
-
         /* Update the time remaining */
-        const gameTimeSoFar = now - gameStartTime;
-        var timeInSecond = Math.floor(gameTimeSoFar / 1000);
+        gameTimeSoFar = now - gameStartTime;
 
         /* Update the sprites */
         monster.update(now);
         survivor.update(now);
+
+        /* Clear the screen */
+        context.clearRect(0, 0, cv.width, cv.height);
 
         /*monster catches the survivor*/
         const { x, y } = survivor.getXY();
@@ -227,6 +223,7 @@ const GamePlayPage = (function() {
             // console.log("Survivor:");
             // console.log("Trap set: " + survivor.getNumTrapSet());
             // console.log("Chest open: " + survivor.getNumChestOpen());
+            Socket.endgame("M");
             sounds.tension.pause();
             return;
         }
@@ -242,12 +239,10 @@ const GamePlayPage = (function() {
             // console.log("Survivor:");
             // console.log("Trap set" + survivor.getNumTrapSet());
             // console.log("Chest open" + survivor.getNumChestOpen());
+            Socket.endgame("S");
             sounds.tension.pause();
             return;
         }
-
-        /* Clear the screen */
-        context.clearRect(0, 0, cv.width, cv.height);
 
         for (var i = 0; i < map.length; i++) {
             for (var j = 0; j < map[i].length; j++) {
@@ -433,7 +428,11 @@ const GamePlayPage = (function() {
         requestAnimationFrame(doFrame);
     }
 
-    return { initialize, create_map, start_game, add_key_handler, setmap, move, stop, update_frame};
+    const get_time = function(){
+        return gameTimeSoFar;
+    }
+
+    return { initialize, create_map, start_game, add_key_handler, setmap, move, stop, update_frame, get_time};
 })();
 
 const StatisticPage = (function() {
@@ -442,7 +441,7 @@ const StatisticPage = (function() {
         $("#restart").on("click", function(){
             $("#statistics_page").hide();
             $("#waiting_page").show();
-            // Socket.startgame();
+            Socket.startgame();
         });
 
         $("#back_to_menu").on("click", function(){
@@ -451,5 +450,17 @@ const StatisticPage = (function() {
         });
     };
 
-    return { initialize };
+    const show = function(identity){
+        $("#gameplay_page").hide();
+        $("#statistics_page").show();
+        $("#congulation_text").text(identity + " Win!");
+        let time = GamePlayPage.get_time();
+        time = Math.floor(time / 1000);
+        let min = Math.floor(time / 60);
+        let sec = (time % 60);
+        $("#time").text("Time of the Game: " + min + " mins " + sec + " seconds");
+
+    }
+
+    return { initialize,show };
 })();

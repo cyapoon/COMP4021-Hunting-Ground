@@ -213,6 +213,7 @@ const check_game = function(){
         in_game = true;
         clearTimeout(placeholder);
         placeholder = setTimeout(end_game, 3000);
+        next_map_data = [];
         next_map_data = mapData;
         generate_map();
         
@@ -388,6 +389,12 @@ io.on("connection", (socket) => {
 
     socket.on("getmap", () => {
         socket.emit("mapdata", next_map_data);
+    });
+
+    socket.on("win", (identity) => {
+        io.emit("result", JSON.stringify( {winner: identity, list: PlayingUsers} , null, " ") );
+        delete PlayingUsers["Monster"];
+        delete PlayingUsers["Survivor"];
     });
 });
 
