@@ -117,7 +117,26 @@ const UserPanel = (function () {
         }
     };
 
-    return { initialize, update };
+    /* Create the sounds */
+    const sounds = {
+        tension: new Audio("./music/tension.mp3"),
+        calm: new Audio("./music/calm.mp3"),
+    };
+    sounds.tension.loop = true;
+    sounds.calm.loop = true;
+
+    const play_music = function(music){
+        for(let audio in sounds){
+            if(audio !== music){
+                sounds[audio].pause();
+            } else {
+                sounds[audio].play();
+            }
+        }
+    }
+
+
+    return { initialize, update, play_music};
 })();
 
 const OnlineUsersPanel = (function () {
@@ -153,12 +172,6 @@ const GamePlayPage = (function () {
     const cv = $("canvas").get(0);
     const context = cv.getContext("2d");
 
-    /* Create the sounds */
-    const sounds = {
-        tension: new Audio("./music/tension.mp3"),
-        calm: new Audio("./music/calm.mp3"),
-    };
-
     let gameStartTime = 0;      // The timestamp when the game starts
 
     /* Create the game area */
@@ -184,16 +197,17 @@ const GamePlayPage = (function () {
             $("#job-description").text("Kill the Survivor and don't let him reach the exit!");
             setTimeout(function () {
                 add_key_handler("M");
-            }, 3000);
+            }, 5000);
         } else if (identity === "S") {
             $("#identity-text").text("You are Survivor!");
             $("#job-description").text("Don't let the Monster catch you and escape from the exit!");
             setTimeout(function () {
                 add_key_handler("S");
-            }, 3000);
+            }, 5000);
         }
         $("#game-start").show();
         $("#gameplay_page").show();
+        gameStartTime = 0;
         create_map();
     };
 
@@ -216,36 +230,14 @@ const GamePlayPage = (function () {
         const { x, y } = survivor.getXY();
         if (monster.getBoundingBox().isPointInBox(x - 12, y - 15) && monster.getBoundingBox().isPointInBox(x + 12, y + 15)
             && monster.getBoundingBox().isPointInBox(x + 12, y - 15) && monster.getBoundingBox().isPointInBox(x - 12, y + 15)) {
-            // console.log("Monster catches the survivor");
-            // console.log(timeInSecond);
-            // console.log("Monster:");
-            // console.log("Obstacle destroy: " + monster.getNumObstacleDestroyed());
-            // console.log("Trap Hit: " + monster.getNumTrapHit());
-            // console.log("Survivor:");
-            // console.log("Trap set: " + survivor.getNumTrapSet());
-            // console.log("Chest open: " + survivor.getNumChestOpen());
             Socket.endgame("M");
-            $("#gamescene").off();
-            gameStartTime = 0;
-            sounds.tension.pause();
             return;
         }
         /* The survivor reaches exit */
         const xIndex = Math.round((x - gameArea.getLeft()) / 25);
         const yIndex = Math.round((y - gameArea.getTop()) / 25);
         if (mapData[yIndex][xIndex] == 7) {
-            // console.log("Survivor escapes!");
-            // console.log(timeInSecond);
-            // console.log("Monster:");
-            // console.log("Obstacle destroy" + monster.getNumObstacleDestroyed());
-            // console.log("Trap Hit" + monster.getNumTrapHit());
-            // console.log("Survivor:");
-            // console.log("Trap set" + survivor.getNumTrapSet());
-            // console.log("Chest open" + survivor.getNumChestOpen());
             Socket.endgame("S");
-            $("#gamescene").off();
-            gameStartTime = 0;
-            sounds.tension.pause();
             return;
         }
 
@@ -271,7 +263,6 @@ const GamePlayPage = (function () {
             start_game();
             gameMap.drawmap();
             mapData = gameMap.getMapData();
-            console.log(mapData);
             map = gameMap.getMap();
             monster = Monster(context, gameArea.getRight() - 25, gameArea.getBottom() - 25, gameArea, mapData, map);
             survivor = Survivor(context, gameArea.getLeft() + 25, gameArea.getTop() + 10 * 25, gameArea, mapData, map);
@@ -284,8 +275,7 @@ const GamePlayPage = (function () {
             update_frame();
             $("#game-start").hide();
             $("#gamescene").focus();
-            sounds.tension.loop = true;
-            sounds.tension.play();
+            UserPanel.play_music("tension");
         }, 3000);
     };
 
@@ -296,32 +286,26 @@ const GamePlayPage = (function () {
                 if (event.keyCode == 65) {
                     // survivor.move(1);
                     Socket.getSocket().emit("move", { direction: 1, identity: "S" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // survivor.move(2);
                     Socket.getSocket().emit("move", { direction: 2, identity: "S" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // survivor.move(3);
                     Socket.getSocket().emit("move", { direction: 3, identity: "S" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // survivor.move(4);
                     Socket.getSocket().emit("move", { direction: 4, identity: "S" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 32) {
                     // survivor.switchCheatingMode();
                     Socket.getSocket().emit("cheat", { identity: "S" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 74) {
                     // survivor.setTrap();
                     Socket.getSocket().emit("trap");
-                    Socket.getSocket().emit("requestanime");
                 }
 
             });
@@ -331,22 +315,18 @@ const GamePlayPage = (function () {
                 if (event.keyCode == 65) {
                     // survivor.stop(1);
                     Socket.getSocket().emit("stop", { direction: 1, identity: "S" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // survivor.stop(2);
                     Socket.getSocket().emit("stop", { direction: 2, identity: "S" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // survivor.stop(3);
                     Socket.getSocket().emit("stop", { direction: 3, identity: "S" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // survivor.stop(4);
                     Socket.getSocket().emit("stop", { direction: 4, identity: "S" });
-                    Socket.getSocket().emit("requestanime");
                 }
             });
 
@@ -357,32 +337,26 @@ const GamePlayPage = (function () {
                 if (event.keyCode == 65) {
                     // monster.move(1);
                     Socket.getSocket().emit("move", { direction: 1, identity: "M" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // monster.move(2);
                     Socket.getSocket().emit("move", { direction: 2, identity: "M" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // monster.move(3);
                     Socket.getSocket().emit("move", { direction: 3, identity: "M" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // monster.move(4);
                     Socket.getSocket().emit("move", { direction: 4, identity: "M" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 32) {
                     // monster.switchCheatingMode();
                     Socket.getSocket().emit("cheat", { identity: "M" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 74) {
                     // monster.destroy();
                     Socket.getSocket().emit("destroy");
-                    Socket.getSocket().emit("requestanime");
                 }
 
             });
@@ -392,22 +366,18 @@ const GamePlayPage = (function () {
                 if (event.keyCode == 65) {
                     // monster.stop(1);
                     Socket.getSocket().emit("stop", { direction: 1, identity: "M" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // monster.stop(2);
                     Socket.getSocket().emit("stop", { direction: 2, identity: "M" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // monster.stop(3);
                     Socket.getSocket().emit("stop", { direction: 3, identity: "M" });
-                    Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // monster.stop(4);
                     Socket.getSocket().emit("stop", { direction: 4, identity: "M" });
-                    Socket.getSocket().emit("requestanime");
                 }
             });
 
@@ -461,7 +431,15 @@ const GamePlayPage = (function () {
         return gameTimeSoFar;
     }
 
-    return { initialize, create_map, start_game, add_key_handler, setmap, move, stop, setTrap, destroy, switchCheatingMode, update_frame, get_time };
+    const get_stat = function(){
+        let mon_obs_des = monster.getNumObstacleDestroyed();
+        let mon_trap_hit = monster.getNumTrapHit();
+        let sur_trap_set = survivor.getNumTrapSet();
+        let sur_chest_open = survivor.getNumChestOpen();
+        return {mon_obs_des, mon_trap_hit, sur_trap_set, sur_chest_open};
+    }
+
+    return { initialize, create_map, start_game, add_key_handler, setmap, move, stop, setTrap, destroy, switchCheatingMode, update_frame, get_time, get_stat};
 })();
 
 const StatisticPage = (function () {
@@ -489,6 +467,9 @@ const StatisticPage = (function () {
         let sec = (time % 60);
         $("#time").text("Time of the Game: " + min + " mins " + sec + " seconds");
 
+        let stat = GamePlayPage.get_stat();
+        $("#monster_text").html("Obstacle Destroy: " + stat.mon_obs_des + "<br>" + "Trap Hit: " + stat.mon_trap_hit);
+        $("#survivor_text").html("Trap Set: " + stat.sur_trap_set + "<br>" + "Chest Open: " + stat.sur_chest_open);
     }
 
     return { initialize, show };

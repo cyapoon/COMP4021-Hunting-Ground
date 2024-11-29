@@ -132,32 +132,26 @@
         
         <div id="statistics_page" class="col page">
             <div id = "congulation_message" class="row">
-                <span id ="congulation_text">Monster Win!</span>
+                <span id ="congulation_text"></span>
             </div>
 
             <div id = "used_time" class="row">
-                <span id ="time">Time of the Game: 3 mins 30 second</span>
+                <span id ="time"></span>
             </div>
 
             <div id = "statistics_content" class="row">
                 <div id="monster_stat" class="col">
                     <img src="../image/monster_crop.png" height="50px" width="50px"> 
+                    Monster Statistics:
+                    <br><br>
                     <div id="monster_text">
-                        Monster Statistics:
-                        <br><br>
-                        Obstacle Destroy: 10
-                        <br>
-                        Trap Hit: 5
                     </div>
                 </div>
                 <div id="survivor_stat" class="col">
                     <img src="../image/survivor_crop.png" height="50px" width="50px"> 
+                    Survivor Statistics:
+                    <br><br>
                     <div id="survivor_text">
-                        Survivor Statistics:
-                        <br><br>
-                        Trap Set: 5
-                        <br>
-                        Chest Open: 3
                     </div>
                 </div>
             </div>
@@ -204,6 +198,10 @@
                 SignInForm.show(); 
             }
         );
+
+        $(document).one("click", function(){
+            UserPanel.play_music("calm");
+        });
     });
     </script>
 </body>

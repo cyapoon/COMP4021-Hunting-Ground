@@ -2,6 +2,7 @@
 
 Installation Insturction:
 
+First, before setup the server
 npm install express
 npm install bcrypt
 npm install express-session

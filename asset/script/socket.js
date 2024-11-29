@@ -129,12 +129,18 @@ const Socket = (function () {
         });
 
         socket.on("result", (winner_list) => {
+            UserPanel.play_music("calm");
             let result = JSON.parse(winner_list);
             const identity = result.winner;
             const playinguser = result.list;
             let username = Authentication.getUser().username;
             if ((playinguser["Monster"] && playinguser["Monster"].username === username) || (playinguser["Survivor"] && playinguser["Survivor"].username === username)) {
-                StatisticPage.show(identity);
+                $("#gamescene").off();
+                if(identity === "M"){
+                    StatisticPage.show("Monster");
+                } else if (identity === "S"){
+                    StatisticPage.show("Survivor");
+                }
             }
         });
     };

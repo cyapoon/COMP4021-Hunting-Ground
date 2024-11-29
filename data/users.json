@@ -10,5 +10,9 @@
  "Test3": {
   "name": "Ken",
   "password": "$2b$10$MC9UQi4UT1ZBLOsCYr5AhOChr9hoBdvrv1DBnfRygihzEh29AJAMm"
+ },
+ "P1": {
+  "name": "Starry",
+  "password": "$2b$10$RKS/J/zQrgGsAgbMw9lSYOkP3kGzO2z2SzYhtn31idRvNaf4BNWz."
  }
 }
