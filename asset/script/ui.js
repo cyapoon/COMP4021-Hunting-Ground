@@ -1,6 +1,6 @@
-const SignInForm = (function() {
+const SignInForm = (function () {
     // This function initializes the UI
-    const initialize = function() {
+    const initialize = function () {
 
         // Submit event for the signin form
         $("#signin-form").on("submit", (e) => {
@@ -29,7 +29,7 @@ const SignInForm = (function() {
 
             // Get the input fields
             const username = $("#register-username").val().trim();
-            const name     = $("#register-name").val().trim();
+            const name = $("#register-name").val().trim();
             const password = $("#register-password").val().trim();
             const confirmPassword = $("#register-confirm").val().trim();
 
@@ -51,12 +51,12 @@ const SignInForm = (function() {
     };
 
     // This function shows the form
-    const show = function() {
+    const show = function () {
         $("#signin-overlay").fadeIn(500);
     };
 
     // This function hides the form
-    const hide = function() {
+    const hide = function () {
         $("#signin-form").get(0).reset();
         $("#signin-message").text("");
         $("#register-message").text("");
@@ -67,9 +67,9 @@ const SignInForm = (function() {
 })();
 
 
-const UserPanel = (function() {
+const UserPanel = (function () {
     // This function initializes the UI
-    const initialize = function() {
+    const initialize = function () {
         // Click event for the signout button
         $("#signout-button").on("click", () => {
             // Send a signout request
@@ -83,21 +83,21 @@ const UserPanel = (function() {
             );
         });
 
-        $("#instruction").on("click", function(){
+        $("#instruction").on("click", function () {
             $("#instruction-overlay").show();
         });
 
-        $("#close").on("click", function(){
+        $("#close").on("click", function () {
             $("#instruction-overlay").hide();
         });
 
-        $("#start").on("click", function(){
+        $("#start").on("click", function () {
             $("#frontpage").hide();
             $("#waiting_page").show();
             Socket.startgame();
         });
 
-        $("#cancel").on("click", function(){
+        $("#cancel").on("click", function () {
             $("#waiting_page").hide();
             $("#frontpage").show();
             Socket.cancel();
@@ -106,7 +106,7 @@ const UserPanel = (function() {
     };
 
     // This function updates the user panel
-    const update = function(user) {
+    const update = function (user) {
         if (user) {
             $("#greeting_text").text("Welcome Back, " + user.name);
             // $("#user-panel .user-name").text(user.name);
@@ -120,9 +120,9 @@ const UserPanel = (function() {
     return { initialize, update };
 })();
 
-const OnlineUsersPanel = (function() {
+const OnlineUsersPanel = (function () {
     // This function updates the user panel
-    const update = function(no_of_player) {
+    const update = function (no_of_player) {
         if (no_of_player) {
             $("#user-panel .online-player").text("Online User: " + no_of_player);
         }
@@ -134,9 +134,9 @@ const OnlineUsersPanel = (function() {
     return { update };
 })();
 
-const WaitingPage = (function() {
+const WaitingPage = (function () {
     // This function updates the queue
-    const update_queue = function(pos) {
+    const update_queue = function (pos) {
         if (pos) {
             $("#waiting_pos").text("Queue Position: " + pos);
         }
@@ -148,7 +148,7 @@ const WaitingPage = (function() {
     return { update_queue };
 })();
 
-const GamePlayPage = (function() {
+const GamePlayPage = (function () {
     /* Get the canvas and 2D context */
     const cv = $("canvas").get(0);
     const context = cv.getContext("2d");
@@ -177,18 +177,18 @@ const GamePlayPage = (function() {
     let gameTimeSoFar;
 
     // This function initializes the UI
-    const initialize = function(identity) {
+    const initialize = function (identity) {
         $("#waiting_page").hide();
-        if(identity === "M"){
+        if (identity === "M") {
             $("#identity-text").text("You are Monster!");
             $("#job-description").text("Kill the Survivor and don't let him reach the exit!");
-            setTimeout(function(){
+            setTimeout(function () {
                 add_key_handler("M");
             }, 3000);
-        } else if (identity === "S"){
+        } else if (identity === "S") {
             $("#identity-text").text("You are Survivor!");
             $("#job-description").text("Don't let the Monster catch you and escape from the exit!");
-            setTimeout(function(){
+            setTimeout(function () {
                 add_key_handler("S");
             }, 3000);
         }
@@ -256,15 +256,15 @@ const GamePlayPage = (function() {
         /* Process the next frame */
     };
 
-    const create_map = function() {
+    const create_map = function () {
         Socket.getSocket().emit("getmap");
         /* Start the game */
         start_game();
     };
 
-    const start_game = function() {
+    const start_game = function () {
         /* Start the game */
-        setTimeout(function(){
+        setTimeout(function () {
             $("#game-start").hide();
             gameMap.drawmap();
             mapData = gameMap.getMapData();
@@ -274,36 +274,36 @@ const GamePlayPage = (function() {
             $("#gamescene").focus();
             sounds.tension.loop = true;
             sounds.tension.play();
-        }, 3000);    
+        }, 3000);
     };
 
-    const add_key_handler = function(identity){
-        if(identity === "S"){
+    const add_key_handler = function (identity) {
+        if (identity === "S") {
             $("#gamescene").on("keydown", function (event) {
                 /* survivor move */
                 if (event.keyCode == 65) {
                     // survivor.move(1);
-                    Socket.getSocket().emit("move", {direction: 1, identity: "S"});
+                    Socket.getSocket().emit("move", { direction: 1, identity: "S" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // survivor.move(2);
-                    Socket.getSocket().emit("move", {direction: 2, identity: "S"});
+                    Socket.getSocket().emit("move", { direction: 2, identity: "S" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // survivor.move(3);
-                    Socket.getSocket().emit("move", {direction: 3, identity: "S"});
+                    Socket.getSocket().emit("move", { direction: 3, identity: "S" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // survivor.move(4);
-                    Socket.getSocket().emit("move", {direction: 4, identity: "S"});
+                    Socket.getSocket().emit("move", { direction: 4, identity: "S" });
                     Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 32) {
                     // survivor.switchCheatingMode();
-                    Socket.getSocket().emit("cheat", {identity: "S"});
+                    Socket.getSocket().emit("cheat", { identity: "S" });
                     Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 74) {
@@ -318,53 +318,53 @@ const GamePlayPage = (function() {
                 /* survivor stop */
                 if (event.keyCode == 65) {
                     // survivor.stop(1);
-                    Socket.getSocket().emit("stop", {direction: 1, identity: "S"});
+                    Socket.getSocket().emit("stop", { direction: 1, identity: "S" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // survivor.stop(2);
-                    Socket.getSocket().emit("stop", {direction: 2, identity: "S"});
+                    Socket.getSocket().emit("stop", { direction: 2, identity: "S" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // survivor.stop(3);
-                    Socket.getSocket().emit("stop", {direction: 3, identity: "S"});
+                    Socket.getSocket().emit("stop", { direction: 3, identity: "S" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // survivor.stop(4);
-                    Socket.getSocket().emit("stop", {direction: 4, identity: "S"});
+                    Socket.getSocket().emit("stop", { direction: 4, identity: "S" });
                     Socket.getSocket().emit("requestanime");
                 }
             });
 
-        } else if (identity === "M"){
+        } else if (identity === "M") {
             $("#gamescene").on("keydown", function (event) {
 
                 /* monster move */
                 if (event.keyCode == 65) {
                     // monster.move(1);
-                    Socket.getSocket().emit("move", {direction: 1, identity: "M"});
+                    Socket.getSocket().emit("move", { direction: 1, identity: "M" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // monster.move(2);
-                    Socket.getSocket().emit("move", {direction: 2, identity: "M"});
+                    Socket.getSocket().emit("move", { direction: 2, identity: "M" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // monster.move(3);
-                    Socket.getSocket().emit("move", {direction: 3, identity: "M"});
+                    Socket.getSocket().emit("move", { direction: 3, identity: "M" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // monster.move(4);
-                    Socket.getSocket().emit("move", {direction: 4, identity: "M"});
+                    Socket.getSocket().emit("move", { direction: 4, identity: "M" });
                     Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 32) {
                     // monster.switchCheatingMode();
-                    Socket.getSocket().emit("cheat", {identity: "M"});
+                    Socket.getSocket().emit("cheat", { identity: "M" });
                     Socket.getSocket().emit("requestanime");
                 }
                 if (event.keyCode == 74) {
@@ -379,22 +379,22 @@ const GamePlayPage = (function() {
                 /* monster stop */
                 if (event.keyCode == 65) {
                     // monster.stop(1);
-                    Socket.getSocket().emit("stop", {direction: 1, identity: "M"});
+                    Socket.getSocket().emit("stop", { direction: 1, identity: "M" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 87) {
                     // monster.stop(2);
-                    Socket.getSocket().emit("stop", {direction: 2, identity: "M"});
+                    Socket.getSocket().emit("stop", { direction: 2, identity: "M" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 68) {
                     // monster.stop(3);
-                    Socket.getSocket().emit("stop", {direction: 3, identity: "M"});
+                    Socket.getSocket().emit("stop", { direction: 3, identity: "M" });
                     Socket.getSocket().emit("requestanime");
                 }
                 else if (event.keyCode == 83) {
                     // monster.stop(4);
-                    Socket.getSocket().emit("stop", {direction: 4, identity: "M"});
+                    Socket.getSocket().emit("stop", { direction: 4, identity: "M" });
                     Socket.getSocket().emit("requestanime");
                 }
             });
@@ -402,11 +402,11 @@ const GamePlayPage = (function() {
         }
     };
 
-    const setmap = function(new_map){
+    const setmap = function (new_map) {
         gameMap.setMapData(new_map);
     };
 
-    const move = function(identity, direction){
+    const move = function (identity, direction) {
         if (identity === "M") {
             monster.move(direction);
         }
@@ -415,7 +415,16 @@ const GamePlayPage = (function() {
         }
     };
 
-    const stop = function(identity, direction){
+    const switchCheatingMode = function (identity) {
+        if (identity === "M") {
+            monster.switchCheatingMode();
+        }
+        else if (identity === "S") {
+            survivor.switchCheatingMode();
+        }
+    }
+
+    const stop = function (identity, direction) {
         if (identity === "M") {
             monster.stop(direction);
         }
@@ -424,33 +433,41 @@ const GamePlayPage = (function() {
         }
     };
 
-    const update_frame = function(){
+    const setTrap = function () {
+        survivor.setTrap();
+    }
+
+    const destroy = function () {
+        monster.destroy();
+    }
+
+    const update_frame = function () {
         requestAnimationFrame(doFrame);
     }
 
-    const get_time = function(){
+    const get_time = function () {
         return gameTimeSoFar;
     }
 
-    return { initialize, create_map, start_game, add_key_handler, setmap, move, stop, update_frame, get_time};
+    return { initialize, create_map, start_game, add_key_handler, setmap, move, stop, setTrap, destroy, switchCheatingMode, update_frame, get_time };
 })();
 
-const StatisticPage = (function() {
+const StatisticPage = (function () {
     // This function initializes the UI
-    const initialize = function() {
-        $("#restart").on("click", function(){
+    const initialize = function () {
+        $("#restart").on("click", function () {
             $("#statistics_page").hide();
             $("#waiting_page").show();
             Socket.startgame();
         });
 
-        $("#back_to_menu").on("click", function(){
+        $("#back_to_menu").on("click", function () {
             $("#statistics_page").hide();
             $("#frontpage").show();
         });
     };
 
-    const show = function(identity){
+    const show = function (identity) {
         $("#gameplay_page").hide();
         $("#statistics_page").show();
         $("#congulation_text").text(identity + " Win!");
@@ -462,5 +479,5 @@ const StatisticPage = (function() {
 
     }
 
-    return { initialize,show };
+    return { initialize, show };
 })();

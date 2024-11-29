@@ -51,14 +51,12 @@ const Socket = (function () {
 
         socket.on("moving", (data) => {
             const msg = JSON.parse(data);
-            let coordinate = msg["coordinate"];
-            console.log(coordinate);
             let action = msg["action"];
             let playing_list = msg["playerlist"];
             let username = Authentication.getUser().username;
             if ((playing_list["Monster"] && playing_list["Monster"].username === username) || (playing_list["Survivor"] && playing_list["Survivor"].username === username)) {
                 let { direction, identity } = action;
-                GamePlayPage.move(identity, direction,coordinate);
+                GamePlayPage.move(identity, direction);
                 // if (identity === "M") {
                 //     monster.move(direction);
                 // }
@@ -70,13 +68,12 @@ const Socket = (function () {
 
         socket.on("stopping", (data) => {
             const msg = JSON.parse(data);
-            let coordinate = msg["coordinate"];
             let action = msg["action"];
             let playing_list = msg["playerlist"];
             let username = Authentication.getUser().username;
             if ((playing_list["Monster"] && playing_list["Monster"].username === username) || (playing_list["Survivor"] && playing_list["Survivor"].username === username)) {
                 let { direction, identity } = action;
-                GamePlayPage.stop(identity, direction,coordinate);
+                GamePlayPage.stop(identity, direction);
                 // if (identity === "M") {
 
                 //     monster.stop(direction);
@@ -93,13 +90,9 @@ const Socket = (function () {
             let playing_list = msg["playerlist"];
             let username = Authentication.getUser().username;
             if ((playing_list["Monster"] && playing_list["Monster"].username === username) || (playing_list["Survivor"] && playing_list["Survivor"].username === username)) {
-                let { identity } = action;
-                if (identity === "M") {
-                    monster.switchCheatingMode();
-                }
-                else if (identity === "S") {
-                    survivor.switchCheatingMode();
-                }
+                let identity = action.identity;
+                GamePlayPage.switchCheatingMode(identity);
+                
             }
         }
 
@@ -111,8 +104,8 @@ const Socket = (function () {
             let playing_list = msg["playerlist"];
             let username = Authentication.getUser().username;
             if ((playing_list["Monster"] && playing_list["Monster"].username === username) || (playing_list["Survivor"] && playing_list["Survivor"].username === username)) {
-                console.log("trapping");
-                survivor.setTrap();
+                // console.log("trapping");
+                GamePlayPage.setTrap();
             }
         });
 
@@ -121,8 +114,8 @@ const Socket = (function () {
             let  playing_list  = msg["playerlist"];
             let username = Authentication.getUser().username;
             if ((playing_list["Monster"] && playing_list["Monster"].username === username) || (playing_list["Survivor"] && playing_list["Survivor"].username === username)) {
-                console.log("destroying");
-                monster.destroy();
+                // console.log("destroying");
+                GamePlayPage.destroy();
             }
         });
 
