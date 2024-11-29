@@ -51,12 +51,14 @@ const Socket = (function () {
 
         socket.on("moving", (data) => {
             const msg = JSON.parse(data);
+            let coordinate = msg["coordinate"];
+            console.log(coordinate);
             let action = msg["action"];
             let playing_list = msg["playerlist"];
             let username = Authentication.getUser().username;
             if ((playing_list["Monster"] && playing_list["Monster"].username === username) || (playing_list["Survivor"] && playing_list["Survivor"].username === username)) {
                 let { direction, identity } = action;
-                GamePlayPage.move(identity, direction);
+                GamePlayPage.move(identity, direction,coordinate);
                 // if (identity === "M") {
                 //     monster.move(direction);
                 // }
@@ -68,12 +70,13 @@ const Socket = (function () {
 
         socket.on("stopping", (data) => {
             const msg = JSON.parse(data);
+            let coordinate = msg["coordinate"];
             let action = msg["action"];
             let playing_list = msg["playerlist"];
             let username = Authentication.getUser().username;
             if ((playing_list["Monster"] && playing_list["Monster"].username === username) || (playing_list["Survivor"] && playing_list["Survivor"].username === username)) {
                 let { direction, identity } = action;
-                GamePlayPage.stop(identity, direction);
+                GamePlayPage.stop(identity, direction,coordinate);
                 // if (identity === "M") {
 
                 //     monster.stop(direction);
