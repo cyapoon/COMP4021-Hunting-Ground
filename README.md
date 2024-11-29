@@ -19,3 +19,5 @@ Supplementary:
 2. Work Distribution (Approximately):
    Poon Chun Yuen Alexander -> Video and Game Logic
    Lee Kwan Chi -> Front End (html) and Backend (UI.js...)
+
+3. Here is the github link (https://github.com/cyapoon/COMP4021-Hunting-Ground), in case there are any accidents.
