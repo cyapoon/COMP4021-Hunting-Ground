@@ -165,7 +165,7 @@ const GamePlayPage = (function() {
     const gameArea = BoundingBox(context, 50, 50, 625, 1025);
 
     /* Create the map */
-    let gameMap = GameMap(context, gameArea);
+    let gameMap;
 
     let mapData;
     let map;
@@ -192,6 +192,7 @@ const GamePlayPage = (function() {
                 add_key_handler("S");
             }, 3000);
         }
+        $("#game-start").show();
         $("#gameplay_page").show();
         create_map();
     };
@@ -224,6 +225,8 @@ const GamePlayPage = (function() {
             // console.log("Trap set: " + survivor.getNumTrapSet());
             // console.log("Chest open: " + survivor.getNumChestOpen());
             Socket.endgame("M");
+            $("#gamescene").off();
+            gameStartTime = 0;
             sounds.tension.pause();
             return;
         }
@@ -240,6 +243,8 @@ const GamePlayPage = (function() {
             // console.log("Trap set" + survivor.getNumTrapSet());
             // console.log("Chest open" + survivor.getNumChestOpen());
             Socket.endgame("S");
+            $("#gamescene").off();
+            gameStartTime = 0;
             sounds.tension.pause();
             return;
         }
@@ -258,19 +263,26 @@ const GamePlayPage = (function() {
 
     const create_map = function() {
         Socket.getSocket().emit("getmap");
-        /* Start the game */
-        start_game();
+        gameMap = GameMap(context, gameArea);
+        /* Clear the screen */
+        context.clearRect(0, 0, cv.width, cv.height);
+        /* Start the game */ 
+        setTimeout(function(){
+            start_game();
+            gameMap.drawmap();
+            mapData = gameMap.getMapData();
+            console.log(mapData);
+            map = gameMap.getMap();
+            monster = Monster(context, gameArea.getRight() - 25, gameArea.getBottom() - 25, gameArea, mapData, map);
+            survivor = Survivor(context, gameArea.getLeft() + 25, gameArea.getTop() + 10 * 25, gameArea, mapData, map);
+        },2000);
     };
 
     const start_game = function() {
         /* Start the game */
         setTimeout(function(){
+            update_frame();
             $("#game-start").hide();
-            gameMap.drawmap();
-            mapData = gameMap.getMapData();
-            map = gameMap.getMap();
-            monster = Monster(context, gameArea.getRight() - 25, gameArea.getBottom() - 25, gameArea, mapData, map);
-            survivor = Survivor(context, gameArea.getLeft() + 25, gameArea.getTop() + 10 * 25, gameArea, mapData, map);
             $("#gamescene").focus();
             sounds.tension.loop = true;
             sounds.tension.play();

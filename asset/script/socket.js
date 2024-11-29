@@ -46,7 +46,8 @@ const Socket = (function () {
         });
 
         socket.on("mapdata", (mapdata) =>{
-            GamePlayPage.setmap(mapdata);
+            let map = JSON.parse(mapdata);
+            GamePlayPage.setmap(map);
         });
 
         socket.on("moving", (data) => {

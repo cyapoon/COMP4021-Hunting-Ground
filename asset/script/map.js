@@ -41,7 +41,7 @@ const GameMap = function(context, gameArea) {
     }
 
     const setMapData = function(arr){
-        mapData = arr;
+        mapData = structuredClone(arr);
     }
 
     return{

@@ -212,9 +212,8 @@ const check_game = function(){
 
         in_game = true;
         clearTimeout(placeholder);
-        placeholder = setTimeout(end_game, 3000);
-        next_map_data = [];
-        next_map_data = mapData;
+        placeholder = setTimeout(end_game, 7000);
+        next_map_data = JSON.parse(JSON.stringify(mapData));
         generate_map();
         
         io.emit("change scene", JSON.stringify(PlayingUsers , null, " ") );
@@ -227,8 +226,8 @@ function generate_map(){
     /* The shuffle function for obstacles and traps */
     const shuffle = (array) => { 
         for (let i = array.length - 1; i > 0; i--) { 
-        const j = Math.floor(Math.random() * (i + 1)); 
-        [array[i], array[j]] = [array[j], array[i]]; 
+            const j = Math.floor(Math.random() * (i + 1)); 
+            [array[i], array[j]] = [array[j], array[i]]; 
         } 
         return array; 
     }; 
@@ -295,7 +294,7 @@ const end_game = function(){
     if(in_game === true && Object.keys(PlayingUsers).length === 0){
         in_game = false;
         clearTimeout(placeholder);
-        placeholder = setTimeout(check_game, 5000);
+        placeholder = setTimeout(check_game, 1000);
     } else {
         placeholder = setTimeout(end_game, 20);
         io.emit("animate", JSON.stringify(PlayingUsers , null, " "));
@@ -388,7 +387,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("getmap", () => {
-        socket.emit("mapdata", next_map_data);
+        socket.emit("mapdata", JSON.stringify(next_map_data , null, " "));
     });
 
     socket.on("win", (identity) => {
