@@ -167,16 +167,12 @@ const GamePlayPage = (function() {
     /* Create the map */
     let gameMap = GameMap(context, gameArea);
 
-
-
     let mapData;
     let map;
 
     /* Create the sprites in the game */
     let monster;
     let survivor;
-
-    
 
     // This function initializes the UI
     const initialize = function(identity) {
@@ -291,7 +287,6 @@ const GamePlayPage = (function() {
                 }
                 else if (event.keyCode == 87) {
                     // survivor.move(2);
-                    let msg = {direction: 2, identity: "S"};
                     Socket.getSocket().emit("move", {direction: 2, identity: "S"});
                 }
                 else if (event.keyCode == 68) {
@@ -400,7 +395,7 @@ const StatisticPage = (function() {
         $("#restart").on("click", function(){
             $("#statistics_page").hide();
             $("#waiting_page").show();
-            Socket.startgame();
+            // Socket.startgame();
         });
 
         $("#back_to_menu").on("click", function(){
