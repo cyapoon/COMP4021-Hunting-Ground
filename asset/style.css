@@ -326,6 +326,7 @@ canvas,
 canvas {
     background: url(./image/road.png);
     background-size: cover;
+    outline: none;
 }
 
 #game-start,

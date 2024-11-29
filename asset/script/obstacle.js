@@ -6,7 +6,7 @@ const Obstacle = function(ctx,x,y){
     sprite.setSequence(sequence)
         .setScale(0.25)
         .setShadowScale({ x: 0.75, y: 0.2 })
-        .useSheet("../asset/image/obstacle.png");
+        .useSheet("./image/obstacle.png");
 
     return {
         getXY: sprite.getXY,

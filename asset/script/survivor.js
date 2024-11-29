@@ -11,7 +11,7 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
 
     // sounds
     const sound = {
-        chest: new Audio("../asset/music/chest.mp3"),
+        chest: new Audio("./music/chest.mp3"),
     }
 
     // const getSound = function(){
@@ -53,7 +53,7 @@ const Survivor = function(ctx, x, y, gameArea,mapData,map) {
     sprite.setSequence(sequences.idleDown)
           .setScale(1.2)
         //   .setShadowScale({ x: 0.75, y: 0.20 })
-          .useSheet("../asset/image/survivor.png");
+          .useSheet("./image/survivor.png");
 
     // This is the moving direction, which can be a number from 0 to 4:
     // - `0` - not moving

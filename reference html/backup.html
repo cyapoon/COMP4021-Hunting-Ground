@@ -146,50 +146,49 @@
     <script src="../asset/script/chest.js"></script>
     <script src="../asset/script/obstacle.js"></script>
     <script src="../asset/script/trap.js"></script>
-    <script src="../asset/script/game.js"></script>
     <script>
         $(function () {
             /* Get the canvas and 2D context */
-            const cv = $("canvas").get(0);
-            const context = cv.getContext("2d");
+            // const cv = $("canvas").get(0);
+            // const context = cv.getContext("2d");
 
             /* Create the sounds */
-            const sounds = {
-                tension: new Audio("../asset/music/tension.mp3"),
-                calm: new Audio("../asset/music/calm.mp3"),
-            };
+            // const sounds = {
+            //     tension: new Audio("../asset/music/tension.mp3"),
+            //     calm: new Audio("../asset/music/calm.mp3"),
+            // };
 
             // const totalGameTime = 20;   // Total game time in seconds
             // const gemMaxAge = 3000;     // The maximum age of the gems in milliseconds
-            let gameStartTime = 0;      // The timestamp when the game starts
+            // let gameStartTime = 0;      // The timestamp when the game starts
             // let collectedGems = 0;      // The number of gems collected in the game
 
             /* Create the game area */
-            const gameArea = BoundingBox(context, 50, 50, 625, 1025);
+            // const gameArea = BoundingBox(context, 50, 50, 625, 1025);
 
 
 
             // console.log(monster.getBoundingBox().getBottom());
             /* Create the map */
-            let gameMap = GameMap(context, gameArea);
-            let mapData = gameMap.getMapData();
-            let map = gameMap.getMap();
+            //let gameMap = GameMap(context, gameArea);
+            //let mapData = gameMap.getMapData();
+            //let map = gameMap.getMap();
 
             /* Create the sprites in the game */
             // const monster = Monster(context,gameArea.getRight()-25,gameArea.getBottom()-25,gameArea);
-            const monster = Monster(context, gameArea.getRight() - 25, gameArea.getBottom() - 25, gameArea, mapData, map);
-            const survivor = Survivor(context, gameArea.getLeft() + 25, gameArea.getTop() + 10 * 25, gameArea, mapData, map);
+            // const monster = Monster(context, gameArea.getRight() - 25, gameArea.getBottom() - 25, gameArea, mapData, map);
+            // const survivor = Survivor(context, gameArea.getLeft() + 25, gameArea.getTop() + 10 * 25, gameArea, mapData, map);
 
             /* The main processing of the game */
-            function doFrame(now) {
-                if (gameStartTime == 0) gameStartTime = now;
+            // function doFrame(now) {
+            //    if (gameStartTime == 0) gameStartTime = now;
 
-                sounds.tension.loop = true;
-                sounds.tension.play();
+            //    sounds.tension.loop = true;
+            //    sounds.tension.play();
 
                 /* Update the time remaining */
-                const gameTimeSoFar = now - gameStartTime;
-                var timeInSecond = Math.floor(gameTimeSoFar / 1000);
+            //    const gameTimeSoFar = now - gameStartTime;
+            //    var timeInSecond = Math.floor(gameTimeSoFar / 1000);
                 // const timeRemaining = Math.ceil((totalGameTime * 1000 - gameTimeSoFar) / 1000);
                 // $("#time-remaining").text(timeRemaining);
 
@@ -205,8 +204,8 @@
                 // }
 
                 /* Update the sprites */
-                monster.update(now);
-                survivor.update(now);
+            //    monster.update(now);
+            //    survivor.update(now);
 
                 /*monster catches the survivor*/
                 const { x, y } = survivor.getXY();
@@ -240,120 +239,121 @@
                 }
 
                 /* Clear the screen */
-                context.clearRect(0, 0, cv.width, cv.height);
+            //    context.clearRect(0, 0, cv.width, cv.height);
 
 
-                for (var i = 0; i < map.length; i++) {
-                    for (var j = 0; j < map[i].length; j++) {
-                        map[i][j].draw();
+            //    for (var i = 0; i < map.length; i++) {
+            //        for (var j = 0; j < map[i].length; j++) {
+            //            map[i][j].draw();
                         // console.log(map[i][j]);
-                    }
-                }
-                monster.draw();
-                survivor.draw();
+            //        }
+            //    }
+            //    monster.draw();
+            //    survivor.draw();
 
                 /* Process the next frame */
-                requestAnimationFrame(doFrame);
-            }
+            //    requestAnimationFrame(doFrame);
+            // }
+
+
 
             /* Handle the start of the game */
-            $("#game-start").on("click", function () {
+            //$("#game-start").on("click", function () {
                 /* Hide the start screen */
-                $("#game-start").hide();
+            //    $("#game-start").hide();
 
                 // sounds.background.play();
 
                 /* Handle the keydown of arrow keys and spacebar */
-                $(document).on("keydown", function (event) {
+            //    $(document).on("keydown", function (event) {
 
 
                     /* TODO */
                     /* Handle the key down */
                     /* survivor move */
-                    if (event.keyCode == 65) {
-                        survivor.move(1);
-                    }
-                    else if (event.keyCode == 87) {
-                        survivor.move(2);
-                    }
-                    else if (event.keyCode == 68) {
-                        survivor.move(3);
-                    }
-                    else if (event.keyCode == 83) {
-                        survivor.move(4);
-                    }
-                    if (event.keyCode == 17) {
-                        survivor.switchCheatingMode();
-                    }
+                    // if (event.keyCode == 65) {
+                    //     survivor.move(1);
+                    // }
+                    // else if (event.keyCode == 87) {
+                    //     survivor.move(2);
+                    // }
+                    // else if (event.keyCode == 68) {
+                    //     survivor.move(3);
+                    // }
+                    // else if (event.keyCode == 83) {
+                    //     survivor.move(4);
+                    // }
+                    // if (event.keyCode == 17) {
+                    //     survivor.switchCheatingMode();
+                    // }
 
 
                     /* monster move */
-                    if (event.keyCode == 37) {
-                        monster.move(1);
-                    }
-                    else if (event.keyCode == 38) {
-                        monster.move(2);
-                    }
-                    else if (event.keyCode == 39) {
-                        monster.move(3);
-                    }
-                    else if (event.keyCode == 40) {
-                        monster.move(4);
-                    }
-                    if (event.keyCode == 32) {
-                        monster.switchCheatingMode();
-                    }
-                    if (event.keyCode == 191) {
-                        monster.destroy();
-                    }
-                    if (event.keyCode == 81) {
-                        survivor.setTrap();
-                    }
+                    // if (event.keyCode == 37) {
+                    //     monster.move(1);
+                    // }
+                    // else if (event.keyCode == 38) {
+                    //     monster.move(2);
+                    // }
+                    // else if (event.keyCode == 39) {
+                    //     monster.move(3);
+                    // }
+                    // else if (event.keyCode == 40) {
+                    //     monster.move(4);
+                    // }
+                    // if (event.keyCode == 32) {
+                    //     monster.switchCheatingMode();
+                    // }
+                    // if (event.keyCode == 191) {
+                    //     monster.destroy();
+                    // }
+                    // if (event.keyCode == 81) {
+                    //     survivor.setTrap();
+                    // }
 
-                });
+                // });
 
                 /* Handle the keyup of arrow keys and spacebar */
-                $(document).on("keyup", function (event) {
+                // $(document).on("keyup", function (event) {
 
 
-                    /* TODO */
-                    /* Handle the key up */
-                    /* survivor stop */
-                    if (event.keyCode == 65) {
-                        survivor.stop(1);
-                    }
-                    else if (event.keyCode == 87) {
-                        survivor.stop(2);
-                    }
-                    else if (event.keyCode == 68) {
-                        survivor.stop(3);
-                    }
-                    else if (event.keyCode == 83) {
-                        survivor.stop(4);
-                    }
+                //     /* TODO */
+                //     /* Handle the key up */
+                //     /* survivor stop */
+                //     if (event.keyCode == 65) {
+                //         survivor.stop(1);
+                //     }
+                //     else if (event.keyCode == 87) {
+                //         survivor.stop(2);
+                //     }
+                //     else if (event.keyCode == 68) {
+                //         survivor.stop(3);
+                //     }
+                //     else if (event.keyCode == 83) {
+                //         survivor.stop(4);
+                //     }
 
-                    /* monster stop */
-                    if (event.keyCode == 37) {
-                        monster.stop(1);
-                    }
-                    else if (event.keyCode == 38) {
-                        monster.stop(2);
-                    }
-                    else if (event.keyCode == 39) {
-                        monster.stop(3);
-                    }
-                    else if (event.keyCode == 40) {
-                        monster.stop(4);
-                    }
+                //     /* monster stop */
+                //     if (event.keyCode == 37) {
+                //         monster.stop(1);
+                //     }
+                //     else if (event.keyCode == 38) {
+                //         monster.stop(2);
+                //     }
+                //     else if (event.keyCode == 39) {
+                //         monster.stop(3);
+                //     }
+                //     else if (event.keyCode == 40) {
+                //         monster.stop(4);
+                //     }
 
-                });
+                // });
 
                 /* Start the game */
                 // gem.randomize(gameArea);
-                requestAnimationFrame(doFrame);
-            });
-        }
-    );
+                // requestAnimationFrame(doFrame);
+            // });
+        });
     </script>
 </body>
 
