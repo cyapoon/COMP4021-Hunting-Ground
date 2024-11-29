@@ -188,22 +188,29 @@ const GamePlayPage = (function() {
             $("#gamescene").on("keydown", function (event) {
                 /* survivor move */
                 if (event.keyCode == 65) {
-                    survivor.move(1);
+                    // survivor.move(1);
+                    Socket.getSocket().emit("move", {direction: 1, identity: "S"});
                 }
                 else if (event.keyCode == 87) {
-                    survivor.move(2);
+                    // survivor.move(2);
+                    let msg = {direction: 2, identity: "S"};
+                    Socket.getSocket().emit("move", {direction: 2, identity: "S"});
                 }
                 else if (event.keyCode == 68) {
-                    survivor.move(3);
+                    // survivor.move(3);
+                    Socket.getSocket().emit("move", {direction: 3, identity: "S"});
                 }
                 else if (event.keyCode == 83) {
-                    survivor.move(4);
+                    // survivor.move(4);
+                    Socket.getSocket().emit("move", {direction: 4, identity: "S"});
                 }
-                if (event.keyCode == 17) {
-                    survivor.switchCheatingMode();
+                if (event.keyCode == 32) {
+                    // survivor.switchCheatingMode();
+                    Socket.getSocket().emit("cheat", {identity: "S"});
                 }
-                if (event.keyCode == 81) {
-                    survivor.setTrap();
+                if (event.keyCode == 74) {
+                    // survivor.setTrap();
+                    Socket.getSocket().emit("trap");
                 }
 
             });
@@ -211,16 +218,20 @@ const GamePlayPage = (function() {
             $("#gamescene").on("keyup", function (event) {
                 /* survivor stop */
                 if (event.keyCode == 65) {
-                    survivor.stop(1);
+                    // survivor.stop(1);
+                    Socket.getSocket().emit("stop", {direction: 1, identity: "S"});
                 }
                 else if (event.keyCode == 87) {
-                    survivor.stop(2);
+                    // survivor.stop(2);
+                    Socket.getSocket().emit("stop", {direction: 2, identity: "S"});
                 }
                 else if (event.keyCode == 68) {
-                    survivor.stop(3);
+                    // survivor.stop(3);
+                    Socket.getSocket().emit("stop", {direction: 3, identity: "S"});
                 }
                 else if (event.keyCode == 83) {
-                    survivor.stop(4);
+                    // survivor.stop(4);
+                    Socket.getSocket().emit("stop", {direction: 4, identity: "S"});
                 }
             });
 
@@ -228,40 +239,50 @@ const GamePlayPage = (function() {
             $("#gamescene").on("keydown", function (event) {
 
                 /* monster move */
-                if (event.keyCode == 37) {
-                    monster.move(1);
+                if (event.keyCode == 65) {
+                    // monster.move(1);
+                    Socket.getSocket().emit("move", {direction: 1, identity: "M"});
                 }
-                else if (event.keyCode == 38) {
-                    monster.move(2);
+                else if (event.keyCode == 87) {
+                    // monster.move(2);
+                    Socket.getSocket().emit("move", {direction: 2, identity: "M"});
                 }
-                else if (event.keyCode == 39) {
-                    monster.move(3);
+                else if (event.keyCode == 68) {
+                    // monster.move(3);
+                    Socket.getSocket().emit("move", {direction: 3, identity: "M"});
                 }
-                else if (event.keyCode == 40) {
-                    monster.move(4);
+                else if (event.keyCode == 83) {
+                    // monster.move(4);
+                    Socket.getSocket().emit("move", {direction: 4, identity: "M"});
                 }
                 if (event.keyCode == 32) {
-                    monster.switchCheatingMode();
+                    // monster.switchCheatingMode();
+                    Socket.getSocket().emit("cheat", {identity: "M"});
                 }
-                if (event.keyCode == 191) {
-                    monster.destroy();
+                if (event.keyCode == 74) {
+                    // monster.destroy();
+                    Socket.getSocket().emit("destroy");
                 }
 
             });
 
             $("#gamescene").on("keyup", function (event) {
                 /* monster stop */
-                if (event.keyCode == 37) {
-                    monster.stop(1);
+                if (event.keyCode == 65) {
+                    // monster.stop(1);
+                    Socket.getSocket().emit("stop", {direction: 1, identity: "M"});
                 }
-                else if (event.keyCode == 38) {
-                    monster.stop(2);
+                else if (event.keyCode == 87) {
+                    // monster.stop(2);
+                    Socket.getSocket().emit("stop", {direction: 2, identity: "M"});
                 }
-                else if (event.keyCode == 39) {
-                    monster.stop(3);
+                else if (event.keyCode == 68) {
+                    // monster.stop(3);
+                    Socket.getSocket().emit("stop", {direction: 3, identity: "M"});
                 }
-                else if (event.keyCode == 40) {
-                    monster.stop(4);
+                else if (event.keyCode == 83) {
+                    // monster.stop(4);
+                    Socket.getSocket().emit("stop", {direction: 4, identity: "M"});
                 }
             });
 
