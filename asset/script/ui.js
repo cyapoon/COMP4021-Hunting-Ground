@@ -384,9 +384,27 @@ const GamePlayPage = (function() {
 
     const setmap = function(new_map){
         gameMap.setMapData(new_map);
-    }
+    };
 
-    return { initialize, create_map, start_game, add_key_handler, setmap };
+    const move = function(identity, direction){
+        if (identity === "M") {
+            monster.move(direction);
+        }
+        else if (identity === "S") {
+            survivor.move(direction);
+        }
+    };
+
+    const stop = function(identity, direction){
+        if (identity === "M") {
+            monster.stop(direction);
+        }
+        else if (identity === "S") {
+            survivor.stop(direction);
+        }
+    };
+
+    return { initialize, create_map, start_game, add_key_handler, setmap, move , stop};
 })();
 
 const StatisticPage = (function() {

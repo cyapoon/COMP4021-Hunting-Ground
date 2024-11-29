@@ -56,12 +56,13 @@ const Socket = (function () {
             let username = Authentication.getUser().username;
             if ((playing_list["Monster"] && playing_list["Monster"].username === username) || (playing_list["Survivor"] && playing_list["Survivor"].username === username)) {
                 let { direction, identity } = action;
-                if (identity === "M") {
-                    monster.move(direction);
-                }
-                else if (identity === "S") {
-                    survivor.move(direction);
-                }
+                GamePlayPage.move(identity.direction);
+                // if (identity === "M") {
+                //     monster.move(direction);
+                // }
+                // else if (identity === "S") {
+                //     survivor.move(direction);
+                // }
             }
         });
 
@@ -72,13 +73,14 @@ const Socket = (function () {
             let username = Authentication.getUser().username;
             if ((playing_list["Monster"] && playing_list["Monster"].username === username) || (playing_list["Survivor"] && playing_list["Survivor"].username === username)) {
                 let { direction, identity } = action;
-                if (identity === "M") {
+                GamePlayPage.stop(identity, direction);
+                // if (identity === "M") {
 
-                    monster.stop(direction);
-                }
-                else if (identity === "S") {
-                    survivor.stop(direction);
-                }
+                //     monster.stop(direction);
+                // }
+                // else if (identity === "S") {
+                //     survivor.stop(direction);
+                // }
             }
         });
 
